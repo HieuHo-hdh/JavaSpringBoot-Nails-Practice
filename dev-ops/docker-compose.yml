@@ -1,0 +1,23 @@
+#
+# Copyright IBM Corp All Rights Reserved
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'
+networks:
+  basic:
+    #external:
+      #name: postgres-network
+services:
+  nails_api_v2:
+    container_name: {CONTAINER_NAME}
+    image: {CONTAINER_IMAGE}:1.0
+    mem_limit: 1000m
+    environment:
+      - SPRING_PROFILES_ACTIVE={PROFILES_ACTIVE}
+    volumes:
+      - /opt/deploy/nails/upload-v2:/uploads
+    networks:
+        - basic
+    ports:
+      - "127.0.0.1:{PORT}:8383"

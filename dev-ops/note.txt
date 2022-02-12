@@ -1,0 +1,12 @@
+* URL env:
+
+* Swagger:
+	https://nails.api-v2.developteam.net/swagger-ui.html
+
+* Mysql: 
+
+CREATE DATABASE db_nails_v2 CHARACTER SET utf8;
+CREATE USER 'nails_user' IDENTIFIED BY 'nails_user@123';
+CREATE USER 'nails_user'@'localhost' IDENTIFIED BY 'nails_user@123';
+GRANT ALL PRIVILEGES ON db_nails_v2.* TO 'nails_user';
+FLUSH PRIVILEGES;
