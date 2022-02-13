@@ -50,6 +50,7 @@ public class ErrorCode {
     public static final String CUSTOMER_ERROR_NOT_FOUND_PROVINCE = "ERROR-CUSTOMER-004";
     public static final String CUSTOMER_ERROR_EMAIL_EXIST = "ERROR-CUSTOMER-005";
     public static final String CUSTOMER_ERROR_OLD_PWD_NOT_MATCH = "ERROR-CUSTOMER-006";
+
     /**
      * Employee error code
      */
@@ -61,6 +62,18 @@ public class ErrorCode {
     public static final String EMPLOYEE_ERROR_NOT_FOUND_PROVINCE = "ERROR-EMPLOYEE-005";
     public static final String EMPLOYEE_ERROR_EMAIL_EXIST = "ERROR-EMPLOYEE-006";
     public static final String EMPLOYEE_ERROR_OLD_PWD_NOT_MATCH = "ERROR-EMPLOYEE-007";
+
+    /**
+     * Collaborator error code
+     */
+    public static final String COLLABORATOR_ERROR_UNAUTHORIZED = "ERROR-COLLABORATOR-000";
+    public static final String COLLABORATOR_ERROR_NOT_FOUND = "ERROR-COLLABORATOR-001";
+    public static final String COLLABORATOR_ERROR_PHONE_EXIST = "ERROR-COLLABORATOR-002";
+    public static final String COLLABORATOR_ERROR_USERNAME_EXIST = "ERROR-COLLABORATOR-003";
+    public static final String COLLABORATOR_ERROR_GROUP_NOT_EXIST = "ERROR-COLLABORATOR-004";
+    public static final String COLLABORATOR_ERROR_NOT_FOUND_PROVINCE = "ERROR-COLLABORATOR-005";
+    public static final String COLLABORATOR_ERROR_EMAIL_EXIST = "ERROR-COLLABORATOR-006";
+    public static final String COLLABORATOR_ERROR_OLD_PWD_NOT_MATCH = "ERROR-COLLABORATOR-007";
 
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }

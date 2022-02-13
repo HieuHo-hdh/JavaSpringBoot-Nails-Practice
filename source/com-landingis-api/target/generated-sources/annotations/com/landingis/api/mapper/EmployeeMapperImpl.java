@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-12T18:29:50+0700",
+    date = "2022-02-13T14:59:10+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -29,16 +29,16 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         employee.setAccount( createEmployeeFormToAccount( createEmployeeForm ) );
         employee.setBirthday( createEmployeeForm.getBirthday() );
         employee.setNote( createEmployeeForm.getNote() );
-        employee.setBankName( createEmployeeForm.getBankName() );
-        employee.setSalary( createEmployeeForm.getSalary() );
-        employee.setPlaceOfIssue( createEmployeeForm.getPlaceOfIssue() );
-        employee.setIdentityNumber( createEmployeeForm.getIdentityNumber() );
-        employee.setBankNo( createEmployeeForm.getBankNo() );
         employee.setAddress( createEmployeeForm.getEmployeeAddress() );
         employee.setSex( createEmployeeForm.getSex() );
         employee.setBranchName( createEmployeeForm.getBranchName() );
+        employee.setBankName( createEmployeeForm.getBankName() );
         employee.setDateOfIssue( createEmployeeForm.getDateOfIssue() );
+        employee.setSalary( createEmployeeForm.getSalary() );
         employee.setLabelColor( createEmployeeForm.getLabelColor() );
+        employee.setPlaceOfIssue( createEmployeeForm.getPlaceOfIssue() );
+        employee.setIdentityNumber( createEmployeeForm.getIdentityNumber() );
+        employee.setBankNo( createEmployeeForm.getBankNo() );
         employee.setStatus( createEmployeeForm.getStatus() );
 
         return employee;
@@ -150,10 +150,9 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         Account account = new Account();
 
         account.setAvatarPath( createEmployeeForm.getEmployeeAvatarPath() );
+        account.setEmail( createEmployeeForm.getEmployeeEmail() );
         account.setUsername( createEmployeeForm.getEmployeeUsername() );
         account.setFullName( createEmployeeForm.getEmployeeFullName() );
-        account.setEmail( createEmployeeForm.getEmployeeEmail() );
-        account.setPassword( createEmployeeForm.getPassword() );
         account.setPhone( createEmployeeForm.getEmployeePhone() );
 
         return account;
@@ -172,12 +171,6 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         }
         if ( updateEmployeeAdminForm.getEmployeeFullName() != null ) {
             mappingTarget.setFullName( updateEmployeeAdminForm.getEmployeeFullName() );
-        }
-        if ( updateEmployeeAdminForm.getPassword() != null ) {
-            mappingTarget.setPassword( updateEmployeeAdminForm.getPassword() );
-        }
-        if ( updateEmployeeAdminForm.getEmployeePhone() != null ) {
-            mappingTarget.setPhone( updateEmployeeAdminForm.getEmployeePhone() );
         }
     }
 
