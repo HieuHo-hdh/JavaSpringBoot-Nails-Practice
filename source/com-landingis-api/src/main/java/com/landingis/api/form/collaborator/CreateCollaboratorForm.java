@@ -10,15 +10,16 @@ import java.util.Date;
 
 @Data
 public class CreateCollaboratorForm {
+
     @ApiModelProperty(name = "collaboratorEmail")
     private String collaboratorEmail;
 
     @NotEmpty(message = "collaboratorFullName cannot be null")
-    @ApiModelProperty(name = "collaboratorFullName")
+    @ApiModelProperty(name = "collaboratorFullName", required = true)
     private String collaboratorFullName;
 
     @NotEmpty(message = "collaboratorUsername cannot be null")
-    @ApiModelProperty(name = "collaboratorUsername")
+    @ApiModelProperty(name = "collaboratorUsername", required = true)
     private String collaboratorUsername;
 
     @NotEmpty(message = "password cant not be null")
@@ -26,14 +27,14 @@ public class CreateCollaboratorForm {
     private String password;
 
     @NotEmpty(message = "collaboratorPhone cannot be null")
-    @ApiModelProperty(name = "collaboratorPhone")
+    @ApiModelProperty(name = "collaboratorPhone", required = true)
     private String collaboratorPhone;
 
     @ApiModelProperty(name = "collaboratorAvatarPath")
     private String collaboratorAvatarPath;
 
     @NotEmpty(message = "collaboratorAddress cannot be null")
-    @ApiModelProperty(name = "collaboratorAddress")
+    @ApiModelProperty(name = "collaboratorAddress", required = true)
     private String collaboratorAddress;
 
     @NotNull(message = "birthday cannot be null")
@@ -58,4 +59,8 @@ public class CreateCollaboratorForm {
     @NotNull(message = "Status cannot be null")
     @ApiModelProperty(required = true)
     private Integer status;
+
+    @NotNull(message = "employeeId cannot be null")
+    @ApiModelProperty(name = "employeeId", required = true)
+    private Long employeeId;
 }

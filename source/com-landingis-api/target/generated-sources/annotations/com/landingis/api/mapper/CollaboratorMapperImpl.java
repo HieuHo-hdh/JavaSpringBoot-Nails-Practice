@@ -5,6 +5,7 @@ import com.landingis.api.form.collaborator.CreateCollaboratorForm;
 import com.landingis.api.form.collaborator.UpdateCollaboratorAdminForm;
 import com.landingis.api.storage.model.Account;
 import com.landingis.api.storage.model.Collaborator;
+import com.landingis.api.storage.model.Employee;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-13T23:37:36+0700",
+    date = "2022-02-16T14:08:34+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -26,6 +27,7 @@ public class CollaboratorMapperImpl implements CollaboratorMapper {
 
         Collaborator collaborator = new Collaborator();
 
+        collaborator.setEmployee( createCollaboratorFormToEmployee( createCollaboratorForm ) );
         collaborator.setAccount( createCollaboratorFormToAccount( createCollaboratorForm ) );
         collaborator.setBirthday( createCollaboratorForm.getBirthday() );
         collaborator.setNote( createCollaboratorForm.getNote() );
@@ -103,6 +105,7 @@ public class CollaboratorMapperImpl implements CollaboratorMapper {
         collaboratorDto.setCollaboratorPhone( collaboratorAccountPhone( collaborator ) );
         collaboratorDto.setBranchName( collaborator.getBranchName() );
         collaboratorDto.setBankName( collaborator.getBankName() );
+        collaboratorDto.setEmployeeId( collaboratorEmployeeId( collaborator ) );
         collaboratorDto.setDateOfIssue( collaborator.getDateOfIssue() );
         collaboratorDto.setCollaboratorAddress( collaborator.getAddress() );
         collaboratorDto.setPlaceOfIssue( collaborator.getPlaceOfIssue() );
@@ -131,6 +134,18 @@ public class CollaboratorMapperImpl implements CollaboratorMapper {
         }
 
         return list;
+    }
+
+    protected Employee createCollaboratorFormToEmployee(CreateCollaboratorForm createCollaboratorForm) {
+        if ( createCollaboratorForm == null ) {
+            return null;
+        }
+
+        Employee employee = new Employee();
+
+        employee.setId( createCollaboratorForm.getEmployeeId() );
+
+        return employee;
     }
 
     protected Account createCollaboratorFormToAccount(CreateCollaboratorForm createCollaboratorForm) {
@@ -208,6 +223,21 @@ public class CollaboratorMapperImpl implements CollaboratorMapper {
             return null;
         }
         return phone;
+    }
+
+    private Long collaboratorEmployeeId(Collaborator collaborator) {
+        if ( collaborator == null ) {
+            return null;
+        }
+        Employee employee = collaborator.getEmployee();
+        if ( employee == null ) {
+            return null;
+        }
+        Long id = employee.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
     }
 
     private String collaboratorAccountEmail(Collaborator collaborator) {

@@ -12,9 +12,11 @@ import com.landingis.api.mapper.CollaboratorMapper;
 import com.landingis.api.service.LandingIsApiService;
 import com.landingis.api.storage.criteria.CollaboratorCriteria;
 import com.landingis.api.storage.model.Collaborator;
+import com.landingis.api.storage.model.Employee;
 import com.landingis.api.storage.model.Group;
 import com.landingis.api.storage.repository.AccountRepository;
 import com.landingis.api.storage.repository.CollaboratorRepository;
+import com.landingis.api.storage.repository.EmployeeRepository;
 import com.landingis.api.storage.repository.GroupRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +43,9 @@ public class CollaboratorController extends ABasicController {
 
     @Autowired
     CollaboratorRepository collaboratorRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Autowired
     GroupRepository groupRepository;
@@ -96,11 +101,16 @@ public class CollaboratorController extends ABasicController {
             throw new RequestException(ErrorCode.COLLABORATOR_ERROR_UNAUTHORIZED, "Not allow to create");
         }
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
+        Employee employee = employeeRepository.findById(createCollaboratorForm.getEmployeeId()).orElse(null);
 
+        if (employee == null)
+        {
+            throw new RequestException(ErrorCode.COLLABORATOR_ERROR_NOT_FOUND_EMPLOYEE, "Not found employee");
+        }
         Long accountCheck = accountRepository.countAccountByPhoneOrUsername(createCollaboratorForm.getCollaboratorPhone(), createCollaboratorForm.getCollaboratorUsername());
         if (accountCheck > 0)
         {
-            throw new RequestException(ErrorCode.COLLABORATOR_ERROR_PHONE_EXIST, "Phone exists.");
+            throw new RequestException(ErrorCode.COLLABORATOR_ERROR_PHONE_EXIST, "Phone or username exists.");
         }
         Group group = groupRepository.findFirstByKind(LandingISConstant.GROUP_KIND_COLLABORATOR);
 
@@ -160,7 +170,7 @@ public class CollaboratorController extends ABasicController {
 
     }
 
-    @DeleteMapping(value = "/delete/id")
+    @DeleteMapping(value = "/delete/{id}")
     public ApiMessageDto<CollaboratorDto> delete(@Valid @PathVariable("id") Long id)
     {
         if(!isAdmin())

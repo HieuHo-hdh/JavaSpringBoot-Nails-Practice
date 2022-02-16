@@ -178,7 +178,7 @@ public class CustomerController extends ABasicController{
 
     }
 
-    @DeleteMapping(value = "/delete/id")
+    @DeleteMapping(value = "/delete/{id}")
     public ApiMessageDto<CustomerDto> delete(@Valid @PathVariable("id") Long id)
     {
         if(!isAdmin())

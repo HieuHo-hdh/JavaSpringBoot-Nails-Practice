@@ -26,4 +26,5 @@ public class CollaboratorDto extends ABasicAdminDto {
     private String bankName;
     private String branchName;
 
+    private Long employeeId;
 }

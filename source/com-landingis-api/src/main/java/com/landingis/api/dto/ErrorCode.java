@@ -56,7 +56,7 @@ public class ErrorCode {
      */
     public static final String EMPLOYEE_ERROR_UNAUTHORIZED = "ERROR-EMPLOYEE-000";
     public static final String EMPLOYEE_ERROR_NOT_FOUND = "ERROR-EMPLOYEE-001";
-    public static final String EMPLOYEE_ERROR_PHONE_EXIST = "ERROR-EMPLOYEE-002";
+    public static final String EMPLOYEE_ERROR_PHONE_USERNAME_EXIST = "ERROR-EMPLOYEE-002";
     public static final String EMPLOYEE_ERROR_USERNAME_EXIST = "ERROR-EMPLOYEE-003";
     public static final String EMPLOYEE_ERROR_GROUP_NOT_EXIST = "ERROR-EMPLOYEE-004";
     public static final String EMPLOYEE_ERROR_NOT_FOUND_PROVINCE = "ERROR-EMPLOYEE-005";
@@ -74,6 +74,7 @@ public class ErrorCode {
     public static final String COLLABORATOR_ERROR_NOT_FOUND_PROVINCE = "ERROR-COLLABORATOR-005";
     public static final String COLLABORATOR_ERROR_EMAIL_EXIST = "ERROR-COLLABORATOR-006";
     public static final String COLLABORATOR_ERROR_OLD_PWD_NOT_MATCH = "ERROR-COLLABORATOR-007";
+    public static final String COLLABORATOR_ERROR_NOT_FOUND_EMPLOYEE = "ERROR-COLLABORATOR-008";
 
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }

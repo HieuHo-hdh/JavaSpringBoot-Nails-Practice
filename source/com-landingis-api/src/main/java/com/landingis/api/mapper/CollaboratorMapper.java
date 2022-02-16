@@ -28,6 +28,7 @@ public interface CollaboratorMapper {
     @Mapping(source = "bankName", target = "bankName")
     @Mapping(source = "branchName", target = "branchName")
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "employeeId", target = "employee.id")
     @BeanMapping(ignoreByDefault = true)
     @Named("adminCreateMapping")
     Collaborator fromCreateCollaboratorFormToEntity(CreateCollaboratorForm createCollaboratorForm);
@@ -71,6 +72,7 @@ public interface CollaboratorMapper {
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedBy", target = "modifiedBy")
     @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "employee.id", target = "employeeId")
     @BeanMapping(ignoreByDefault = true)
     @Named("adminMapping")
     CollaboratorDto fromEntityToCollaboratorDto(Collaborator collaborator);

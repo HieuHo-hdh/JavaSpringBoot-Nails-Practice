@@ -30,12 +30,22 @@ public class Collaborator extends Auditable<String> {
     @Column(name="agency_address")
     private String address;
 
+    @Column(name="identity_number")
     private String identityNumber;
+
+    @Column(name="date_of_issue")
     private Date dateOfIssue;
+
+    @Column(name="place_of_issue")
     private String placeOfIssue;
 
+    @Column(name="bank_no")
     private String bankNo;
+
+    @Column(name="bank_name")
     private String bankName;
+
+    @Column(name="branch_name")
     private String branchName;
 
     @Column(name="note", columnDefinition = "TEXT")

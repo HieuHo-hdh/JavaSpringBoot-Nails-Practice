@@ -101,7 +101,7 @@ public class EmployeeController extends ABasicController {
         Long accountCheck = accountRepository.countAccountByPhoneOrUsername(createEmployeeForm.getEmployeePhone(), createEmployeeForm.getEmployeeUsername());
         if (accountCheck > 0)
         {
-            throw new RequestException(ErrorCode.EMPLOYEE_ERROR_PHONE_EXIST, "Phone exists.");
+            throw new RequestException(ErrorCode.EMPLOYEE_ERROR_PHONE_USERNAME_EXIST, "Phone or username exists.");
         }
         Group group = groupRepository.findFirstByKind(LandingISConstant.GROUP_KIND_EMPLOYEE);
 
@@ -161,7 +161,7 @@ public class EmployeeController extends ABasicController {
 
     }
 
-    @DeleteMapping(value = "/delete/id")
+    @DeleteMapping(value = "/delete/{id}")
     public ApiMessageDto<EmployeeDto> delete(@Valid @PathVariable("id") Long id)
     {
         if(!isAdmin())
