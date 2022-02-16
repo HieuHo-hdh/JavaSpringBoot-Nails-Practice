@@ -76,5 +76,12 @@ public class ErrorCode {
     public static final String COLLABORATOR_ERROR_OLD_PWD_NOT_MATCH = "ERROR-COLLABORATOR-007";
     public static final String COLLABORATOR_ERROR_NOT_FOUND_EMPLOYEE = "ERROR-COLLABORATOR-008";
 
+    /**
+     * Province error code
+     */
+    public static final String PROVINCE_ERROR_UNAUTHORIZED = "ERROR-PROVINCE-000";
+    public static final String PROVINCE_ERROR_NOT_FOUND = "ERROR-PROVINCE-001";
+    public static final String PROVINCE_ERROR_KIND_NOT_FOUND = "ERROR-PROVINCE-002" ;
+
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }

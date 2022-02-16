@@ -15,8 +15,8 @@ public class Collaborator extends Auditable<String> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @ManyToOne(fetch = FetchType.LAZY)  //Lazy vs Eager
+    @OnDelete(action = OnDeleteAction.NO_ACTION)    //No_action: CASCADE
     @JoinColumn(name="employee_id")
     private Employee employee;
 

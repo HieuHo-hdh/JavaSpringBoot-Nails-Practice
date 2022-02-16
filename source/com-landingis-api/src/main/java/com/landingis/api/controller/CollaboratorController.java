@@ -91,7 +91,7 @@ public class CollaboratorController extends ABasicController {
             throw new RequestException(ErrorCode.COLLABORATOR_ERROR_NOT_FOUND, "Not found collaborator");
         }
         result.setData(collaboratorMapper.fromEntityToCollaboratorDto(collaborator));
-        result.setMessage("Set Collaborator Sucess");
+        result.setMessage("Set Collaborator Success");
         return result;
     }
 
