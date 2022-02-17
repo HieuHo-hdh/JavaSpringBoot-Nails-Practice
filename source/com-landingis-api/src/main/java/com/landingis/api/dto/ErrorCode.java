@@ -83,5 +83,15 @@ public class ErrorCode {
     public static final String PROVINCE_ERROR_NOT_FOUND = "ERROR-PROVINCE-001";
     public static final String PROVINCE_ERROR_KIND_NOT_FOUND = "ERROR-PROVINCE-002" ;
 
+    /**
+     * Address error code
+     */
+    public static final String ADDRESS_ERROR_UNAUTHORIZED = "ERROR-ADDRESS-000";
+    public static final String ADDRESS_ERROR_NOT_FOUND = "ERROR-ADDRESS-001";
+    public static final String ADDRESS_ERROR_NOT_FOUND_PROVINCE = "ERROR-ADDRESS-002";
+    public static final String ADDRESS_ERROR_NOT_FOUND_DISTRICT = "ERROR-ADDRESS-003";
+    public static final String ADDRESS_ERROR_NOT_FOUND_COMMUNE = "ERROR-ADDRESS-004";
+    public static final String ADDRESS_ERROR_NOT_FOUND_CUSTOMER = "ERROR-ADDRESS-005";
+
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }
