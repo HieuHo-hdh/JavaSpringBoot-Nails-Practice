@@ -37,6 +37,16 @@ public class LandingISConstant {
     public static final Integer PROVINCE_KIND_DISTRICT = 2;
     public static final Integer PROVINCE_KIND_COMMUNE = 3;
 
+    public static final Integer SETTING_KIND_ON_OFF = 1;
+    public static final Integer SETTING_KIND_TEXT = 2;
+    public static final Integer SETTING_KIND_DATE = 3;
+    public static final Integer SETTING_KIND_TIME = 4;
+    public static final Integer SETTING_KIND_TIMESTAMP = 5;
+    public static final Integer SETTING_KIND_UPLOAD = 6;
+
+    public static final Integer SETTING_GROUP_ID_ADMIN = 1;
+    public static final Integer SETTING_GROUP_ID_CUSTOMER = 2;
+
     private LandingISConstant(){
         throw new IllegalStateException("Utility class");
     }

@@ -93,5 +93,15 @@ public class ErrorCode {
     public static final String ADDRESS_ERROR_NOT_FOUND_COMMUNE = "ERROR-ADDRESS-004";
     public static final String ADDRESS_ERROR_NOT_FOUND_CUSTOMER = "ERROR-ADDRESS-005";
 
+    /**
+     * Settings error code
+     */
+    public static final String SETTINGS_ERROR_UNAUTHORIZED = "ERROR-SETTINGS-000";
+    public static final String SETTINGS_ERROR_NOT_FOUND = "ERROR-SETTINGS-001";
+    public static final String SETTINGS_ERROR_NOT_FOUND_KIND = "ERROR-SETTINGS-002";
+    public static final String SETTINGS_ERROR_NOT_FOUND_GROUP = "ERROR-SETTINGS-003";
+    public static final String SETTINGS_ERROR_INVALID_GROUP = "ERROR-SETTINGS-004";
+    public static final String SETTINGS_ERROR_KEY_DUPLICATED = "ERROR-SETTINGS-005";
+
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }

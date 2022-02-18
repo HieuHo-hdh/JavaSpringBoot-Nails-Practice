@@ -58,6 +58,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 "/v1/collaborator/**",
                 "/v1/province/**",
                 "/v1/address/**",
+                "/v1/settings/**",
 
         };
         String[] arrayExclude = new String[]{"/v1/home/**"};
