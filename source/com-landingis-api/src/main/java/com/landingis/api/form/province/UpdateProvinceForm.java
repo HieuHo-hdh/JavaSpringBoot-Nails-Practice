@@ -16,4 +16,6 @@ public class UpdateProvinceForm {
     @ApiModelProperty(name="provinceName", required = true)
     private String provinceName;
 
+    private Integer status;
+
 }

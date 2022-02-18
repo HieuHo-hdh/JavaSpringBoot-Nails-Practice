@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-16T23:01:43+0700",
+    date = "2022-02-18T12:06:29+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -42,6 +42,9 @@ public class ProvinceMapperImpl implements ProvinceMapper {
         if ( updateProvinceForm.getProvinceName() != null ) {
             province.setProvinceName( updateProvinceForm.getProvinceName() );
         }
+        if ( updateProvinceForm.getStatus() != null ) {
+            province.setStatus( updateProvinceForm.getStatus() );
+        }
     }
 
     @Override
@@ -62,6 +65,7 @@ public class ProvinceMapperImpl implements ProvinceMapper {
         provinceDto.setId( province.getId() );
         provinceDto.setProvinceName( province.getProvinceName() );
         provinceDto.setParentId( provinceParentProvinceId( province ) );
+        provinceDto.setStatus( province.getStatus() );
 
         return provinceDto;
     }

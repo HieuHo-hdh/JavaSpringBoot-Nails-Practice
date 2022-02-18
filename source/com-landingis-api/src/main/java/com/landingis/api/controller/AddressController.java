@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.landingis.api.constant.LandingISConstant.*;
+
 @RestController
 @RequestMapping("/v1/address")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -97,19 +99,19 @@ public class AddressController extends ABasicController {
         }
 
         Province province = provinceRepository.findById(createAddressForm.getProvinceId()).orElse(null);
-        if (province == null)
+        if (province == null || province.getStatus() != STATUS_ACTIVE || province.getKind() != PROVINCE_KIND_PROVINCE)
         {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_NOT_FOUND_PROVINCE, "Not found province");
         }
         Province district = provinceRepository.findById(createAddressForm.getDistrictId()).orElse(null);
         //2nd condition: Check if exists district by comparing district's parentId and provinceId
-        if(district == null || !district.getParentProvince().getId().equals(province.getId()))
+        if(district == null || !district.getParentProvince().getId().equals(province.getId()) || district.getStatus() != STATUS_ACTIVE || district.getKind() != PROVINCE_KIND_DISTRICT)
         {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_NOT_FOUND_DISTRICT, "Not found district");
         }
         //2nd condition: Check if exists commune by comparing commune's parentId and districtId
         Province commune = provinceRepository.findById(createAddressForm.getCommuneId()).orElse(null);
-        if (commune == null || !commune.getParentProvince().getId().equals(district.getId()))
+        if (commune == null || !commune.getParentProvince().getId().equals(district.getId()) || commune.getStatus() != STATUS_ACTIVE || commune.getKind() != PROVINCE_KIND_COMMUNE)
         {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_NOT_FOUND_COMMUNE, "Not found commune");
         }
@@ -135,20 +137,20 @@ public class AddressController extends ABasicController {
         }
 
         Province province = provinceRepository.findById(updateAddressForm.getProvinceId()).orElse(null);
-        if (province == null)
+        if (province == null || province.getStatus() != STATUS_ACTIVE || province.getKind() != PROVINCE_KIND_PROVINCE)
         {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_NOT_FOUND, "Not found address");
         }
 
         Province district = provinceRepository.findById(updateAddressForm.getDistrictId()).orElse(null);
         //2nd condition: Check if exists district by comparing district's parentId and provinceId
-        if(district == null || !district.getParentProvince().getId().equals(province.getId()))
+        if(district == null || !district.getParentProvince().getId().equals(province.getId()) || district.getStatus() != STATUS_ACTIVE || district.getKind() != PROVINCE_KIND_DISTRICT)
         {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_NOT_FOUND_DISTRICT, "Not found district");
         }
         //2nd condition: Check if exists commune by comparing commune's parentId and districtId
         Province commune = provinceRepository.findById(updateAddressForm.getCommuneId()).orElse(null);
-        if (commune == null || !commune.getParentProvince().getId().equals(district.getId()))
+        if (commune == null || !commune.getParentProvince().getId().equals(district.getId()) || commune.getStatus() != STATUS_ACTIVE || commune.getKind() != PROVINCE_KIND_COMMUNE)
         {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_NOT_FOUND_COMMUNE, "Not found commune");
         }

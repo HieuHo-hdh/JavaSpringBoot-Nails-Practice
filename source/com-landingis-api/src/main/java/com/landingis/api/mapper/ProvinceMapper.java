@@ -21,6 +21,7 @@ public interface ProvinceMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "provinceName", target = "provinceName")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("provinceUpdateMapping")
     void fromUpdateProvinceFormToEntity(UpdateProvinceForm updateProvinceForm, @MappingTarget Province province);
@@ -28,6 +29,7 @@ public interface ProvinceMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "provinceName", target = "provinceName")
     @Mapping(source = "parentProvince.id", target = "parentId")
+    @Mapping(source = "status", target = "status")
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
     @Mapping(source = "createdDate", target = "createdDate")
