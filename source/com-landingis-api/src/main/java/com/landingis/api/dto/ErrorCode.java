@@ -103,5 +103,12 @@ public class ErrorCode {
     public static final String SETTINGS_ERROR_INVALID_GROUP = "ERROR-SETTINGS-004";
     public static final String SETTINGS_ERROR_KEY_DUPLICATED = "ERROR-SETTINGS-005";
 
+    /**
+     * Import-export error code
+     */
+    public static final String IMPORTEXPORT_ERROR_UNAUTHORIZED = "ERROR-IMPORTEXPORT-000";
+    public static final String IMPORTEXPORT_ERROR_NOT_FOUND = "ERROR-IMPORTEXPORT-001";
+    public static final String IMPORTEXPORT_ERROR_NOT_FOUND_CATEGORY = "ERROR-IMPORTEXPORT-002";
+
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }

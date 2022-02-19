@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class SettingsDto extends ABasicAdminDto {
+    @ApiModelProperty(name = "id")
     private Long id;
 
     @ApiModelProperty(name = "name")

@@ -14,7 +14,7 @@ public class CreateSettingsForm {
 
     @ApiModelProperty(name="description")
     private String description;
-    
+
     @ApiModelProperty(name="editable")
     private Boolean editable;
 

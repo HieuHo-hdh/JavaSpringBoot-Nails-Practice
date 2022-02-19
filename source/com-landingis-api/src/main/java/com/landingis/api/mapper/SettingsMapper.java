@@ -1,10 +1,8 @@
 package com.landingis.api.mapper;
 
 import com.landingis.api.dto.settings.SettingsDto;
-import com.landingis.api.form.province.UpdateProvinceForm;
 import com.landingis.api.form.settings.CreateSettingsForm;
 import com.landingis.api.form.settings.UpdateSettingsForm;
-import com.landingis.api.storage.model.Province;
 import com.landingis.api.storage.model.Settings;
 import org.mapstruct.*;
 
@@ -23,7 +21,7 @@ public interface SettingsMapper {
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "groupId", target = "groupId")
     @BeanMapping(ignoreByDefault = true)
-    @Named("provinceUpdateMapping")
+    @Named("settingsUpdateMapping")
     Settings fromCreateSettingsFormToEntity(CreateSettingsForm createSettingsForm);
 
     @Mapping(source = "id", target = "id")
