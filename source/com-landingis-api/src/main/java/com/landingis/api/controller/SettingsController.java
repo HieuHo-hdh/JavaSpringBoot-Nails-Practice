@@ -11,10 +11,10 @@ import com.landingis.api.form.settings.UpdateSettingsForm;
 import com.landingis.api.mapper.SettingsMapper;
 import com.landingis.api.service.LandingIsApiService;
 import com.landingis.api.storage.criteria.SettingsCriteria;
-import com.landingis.api.storage.model.Group;
 import com.landingis.api.storage.model.Settings;
 import com.landingis.api.storage.repository.GroupRepository;
 import com.landingis.api.storage.repository.SettingsRepository;
+import com.landingis.api.utils.ConvertUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.Logger;
 
+import javax.persistence.Convert;
 import javax.validation.Valid;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/v1/settings")
@@ -119,10 +121,29 @@ public class SettingsController extends ABasicController {
         }
 
         Settings settings = settingsMapper.fromCreateSettingsFormToEntity(createSettingsForm);
-        if(settings.getGroup().split("::").length <= 1 || StringUtils.isEmpty(settings.getGroup().split("::")[0]) || StringUtils.isEmpty(settings.getGroup().split("::")[1]))
+
+        if(settings.getGroup().split("::").length <= 1)
         {
             throw new RequestException(ErrorCode.SETTINGS_ERROR_INVALID_GROUP, "Group is not valid");
         }
+        else
+        {
+            String firstElement = settings.getGroup().split("::")[0];
+            String secondElement = settings.getGroup().split("::")[1];
+            if (StringUtils.isEmpty(firstElement))
+            {
+                throw new RequestException(ErrorCode.SETTINGS_ERROR_INVALID_GROUP, "Group is not valid");
+            }
+
+            if (StringUtils.isEmpty(secondElement))
+            {
+                throw new RequestException(ErrorCode.SETTINGS_ERROR_INVALID_GROUP, "Group is not valid");
+            }
+            else if (!Objects.equals(ConvertUtils.convertStringToLong(secondElement).toString(), secondElement)){
+                throw new RequestException(ErrorCode.SETTINGS_ERROR_INVALID_GROUP, "Group is not valid");
+            }
+        }
+
 
         Settings settingsKey = settingsRepository.findFirstByKey(settingsMapper.fromCreateSettingsFormToEntity(createSettingsForm).getKey());
         if(settingsKey != null){

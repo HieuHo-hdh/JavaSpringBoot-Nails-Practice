@@ -12,7 +12,10 @@ public class CreateSettingsForm {
     @ApiModelProperty(name="name", required = true)
     private String name;
 
+    @ApiModelProperty(name="description")
     private String description;
+    
+    @ApiModelProperty(name="editable")
     private Boolean editable;
 
     @NotEmpty(message = "settingsGroup cannot be null")
