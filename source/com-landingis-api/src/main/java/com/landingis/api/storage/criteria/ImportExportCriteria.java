@@ -1,5 +1,7 @@
 package com.landingis.api.storage.criteria;
 
+import com.landingis.api.dto.ErrorCode;
+import com.landingis.api.exception.RequestException;
 import com.landingis.api.storage.model.Category;
 import com.landingis.api.storage.model.ImportExport;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,6 +22,8 @@ public class ImportExportCriteria {
     private String code;
     private Date from;
     private Date to;
+//    @NotNull(message = "kind can not be null")
+//    @ApiModelProperty(name = "kind", required = true)
     private Integer kind;
 
     public Specification<ImportExport> getSpecification() {
@@ -57,6 +61,8 @@ public class ImportExportCriteria {
                 if(getKind() != null) {
                     predicates.add(cb.equal(root.get("kind"), getKind()));
                 }
+                else throw new RequestException(ErrorCode.IMPORTEXPORT_ERROR_NULL_KIND, "Kind can not be null");
+
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         };

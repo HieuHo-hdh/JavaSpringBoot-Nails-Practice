@@ -109,6 +109,8 @@ public class ErrorCode {
     public static final String IMPORTEXPORT_ERROR_UNAUTHORIZED = "ERROR-IMPORTEXPORT-000";
     public static final String IMPORTEXPORT_ERROR_NOT_FOUND = "ERROR-IMPORTEXPORT-001";
     public static final String IMPORTEXPORT_ERROR_NOT_FOUND_CATEGORY = "ERROR-IMPORTEXPORT-002";
+    public static final String IMPORTEXPORT_ERROR_NULL_KIND = "ERROR-IMPORTEXPORT-003";
+
 
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-19T15:45:56+0700",
+    date = "2022-02-20T10:33:46+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -42,10 +42,6 @@ public class ImportExportMapperImpl implements ImportExportMapper {
             return;
         }
 
-        if ( importExport.getCategory() == null ) {
-            importExport.setCategory( new Category() );
-        }
-        updateImportExportFormToCategory( updateImportExportForm, importExport.getCategory() );
         if ( updateImportExportForm.getNote() != null ) {
             importExport.setNote( updateImportExportForm.getNote() );
         }
@@ -106,16 +102,6 @@ public class ImportExportMapperImpl implements ImportExportMapper {
         category.setId( createImportExportForm.getCategoryId() );
 
         return category;
-    }
-
-    protected void updateImportExportFormToCategory(UpdateImportExportForm updateImportExportForm, Category mappingTarget) {
-        if ( updateImportExportForm == null ) {
-            return;
-        }
-
-        if ( updateImportExportForm.getCategoryId() != null ) {
-            mappingTarget.setId( updateImportExportForm.getCategoryId() );
-        }
     }
 
     private Long importExportCategoryId(ImportExport importExport) {

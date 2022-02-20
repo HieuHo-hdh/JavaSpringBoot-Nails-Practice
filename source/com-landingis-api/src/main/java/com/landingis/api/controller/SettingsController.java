@@ -16,7 +16,6 @@ import com.landingis.api.storage.repository.GroupRepository;
 import com.landingis.api.storage.repository.SettingsRepository;
 import com.landingis.api.utils.ConvertUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.apache.logging.log4j.Logger;
-
-import javax.persistence.Convert;
+//import org.apache.logging.log4j.Logger;
 import javax.validation.Valid;
 import java.util.Objects;
 
@@ -37,7 +34,7 @@ import java.util.Objects;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class SettingsController extends ABasicController {
-    private static final Logger LOGGER = LogManager.getLogger("SettingsController");
+//    private static final Logger LOGGER = LogManager.getLogger("SettingsController");
 
     PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
