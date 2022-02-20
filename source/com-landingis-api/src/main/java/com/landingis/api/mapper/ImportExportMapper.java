@@ -24,7 +24,6 @@ public interface ImportExportMapper {
     ImportExport fromCreateImportExportFormToEntity(CreateImportExportForm createImportExportForm);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "categoryId", target = "category.id")
     @Mapping(source = "code", target = "code")
     @Mapping(source = "filePath", target = "filePath")
     @Mapping(source = "money", target = "money")

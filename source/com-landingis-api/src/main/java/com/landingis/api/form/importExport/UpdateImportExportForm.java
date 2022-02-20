@@ -11,10 +11,6 @@ public class UpdateImportExportForm {
     @ApiModelProperty(name = "id")
     private Long id;
 
-    @NotNull(message = "categoryId cannot be null")
-    @ApiModelProperty(name = "categoryId")
-    private Long categoryId;
-
     @ApiModelProperty(name = "code")
     private String code;
     @ApiModelProperty(name = "filePath")
