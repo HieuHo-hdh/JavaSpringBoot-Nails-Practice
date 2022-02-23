@@ -44,7 +44,7 @@ public class Product extends Auditable<String> {
     private List<Product> productList;
 
     @Column(name="has_child")
-    private Boolean hasChild;
+    private Boolean hasChild = false;
 
     @Column(name="label_color")
     private String labelColor;

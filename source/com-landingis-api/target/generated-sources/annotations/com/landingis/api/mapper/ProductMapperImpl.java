@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-23T10:38:31+0700",
+    date = "2022-02-23T13:12:50+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -95,6 +95,7 @@ public class ProductMapperImpl implements ProductMapper {
         productDto.setCreatedDate( product.getCreatedDate() );
         productDto.setCreatedBy( product.getCreatedBy() );
         productDto.setPrice( product.getPrice() );
+        productDto.setHasChild( product.getHasChild() );
         productDto.setName( product.getName() );
         productDto.setModifiedDate( product.getModifiedDate() );
         productDto.setModifiedBy( product.getModifiedBy() );

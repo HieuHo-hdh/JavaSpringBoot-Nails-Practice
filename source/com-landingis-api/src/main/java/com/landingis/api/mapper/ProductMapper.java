@@ -53,6 +53,7 @@ public interface ProductMapper {
     @Mapping(source = "description", target = "description")
     @Mapping(source = "shortDescription", target = "shortDescription")
     @Mapping(source = "saleOff", target = "saleOff")
+    @Mapping(source = "hasChild", target = "hasChild")
     @Mapping(source = "labelColor", target = "labelColor")
     @Mapping(source = "productList", target = "productChilds")
     @Mapping(source = "modifiedDate", target = "modifiedDate")

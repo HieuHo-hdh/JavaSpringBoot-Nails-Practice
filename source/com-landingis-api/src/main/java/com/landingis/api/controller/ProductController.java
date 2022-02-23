@@ -101,9 +101,13 @@ public class ProductController extends ABasicController {
             if(parentProduct == null || parentProduct.getParentProduct() != null) {
                 throw new RequestException(ErrorCode.PRODUCT_ERROR_NOT_FOUND, "Not found product parent");
             }
+            else
+            {
+                parentProduct.setHasChild(true);
+                productRepository.save(parentProduct);
+            }
             product.setParentProduct(parentProduct);
         }
-
         productRepository.save(product);
         apiMessageDto.setMessage("Create product success");
         return apiMessageDto;
@@ -114,14 +118,12 @@ public class ProductController extends ABasicController {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_UNAUTHORIZED, "Not allow to create");
         }
-
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         Product product = productRepository.findById(updateProductForm.getId()).orElse(null);
         if(product == null)
         {
             throw new RequestException(ErrorCode.PRODUCT_ERROR_NOT_FOUND, "Not found product.");
         }
-
         Category category = categoryRepository.findById(updateProductForm.getCategoryId()).orElse(null);
         if(category == null || !Objects.equals(category.getStatus(), LandingISConstant.STATUS_ACTIVE)) {
             throw new RequestException(ErrorCode.PRODUCT_ERROR_NOT_FOUND_CATEGORY, "Not found category.");
@@ -145,6 +147,15 @@ public class ProductController extends ABasicController {
         if (product == null)
         {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_NOT_FOUND, "Not found product");
+        }
+        Product parentProduct = product.getParentProduct();
+        if(parentProduct != null)
+        {
+            if (parentProduct.getProductList().size() <= 1)
+            {
+                parentProduct.setHasChild(false);
+                productRepository.save(parentProduct);
+            }
         }
 
         productRepository.delete(product);
