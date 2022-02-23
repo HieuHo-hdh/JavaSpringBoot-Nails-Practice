@@ -111,6 +111,14 @@ public class ErrorCode {
     public static final String IMPORTEXPORT_ERROR_NOT_FOUND_CATEGORY = "ERROR-IMPORTEXPORT-002";
     public static final String IMPORTEXPORT_ERROR_NULL_KIND = "ERROR-IMPORTEXPORT-003";
 
+    /**
+     * Product error code
+     */
+    public static final String PRODUCT_ERROR_UNAUTHORIZED = "ERROR-PRODUCT-000";
+    public static final String PRODUCT_ERROR_NOT_FOUND = "ERROR-PRODUCT-001";
+    public static final String PRODUCT_ERROR_NOT_FOUND_CATEGORY = "ERROR-PRODUCT-002";
+    public static final String PRODUCT_ERROR_NULL_KIND = "ERROR-PRODUCT-003";
+
 
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }

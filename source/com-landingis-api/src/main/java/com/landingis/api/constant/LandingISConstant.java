@@ -28,6 +28,12 @@ public class LandingISConstant {
 
     public static final Integer CATEGORY_KIND = 1;
 
+    public static final Integer CATEGORY_KIND_IMPORT = 1;
+    public static final Integer CATEGORY_KIND_EXPORT = 2;
+    public static final Integer CATEGORY_KIND_PRODUCT = 3;
+    public static final Integer CATEGORY_KIND_COLLABORATOR_PRODUCT = 4;
+    public static final Integer CATEGORY_KIND_NEWS_INTERNAL = 5;
+    public static final Integer CATEGORY_KIND_NEWS_COLLABORATOR = 6;
 
     public static final Integer GENDER_MALE = 1;
     public static final Integer GENDER_FEMALE = 2;

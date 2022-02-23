@@ -122,7 +122,7 @@ public class AddressController extends ABasicController {
     }
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<String> create(@Valid @RequestBody UpdateAddressForm updateAddressForm, BindingResult bindingResult) {
+    public ApiMessageDto<String> update(@Valid @RequestBody UpdateAddressForm updateAddressForm, BindingResult bindingResult) {
 
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.ADDRESS_ERROR_UNAUTHORIZED, "Not allow to create");

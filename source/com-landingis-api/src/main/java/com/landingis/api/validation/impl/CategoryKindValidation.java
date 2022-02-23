@@ -18,7 +18,13 @@ public class CategoryKindValidation implements ConstraintValidator<CategoryKind,
         if(categoryKind == null && allowNull) {
             return true;
         }
-        if(!Objects.equals(categoryKind, LandingISConstant.CATEGORY_KIND)) {
+        if(!Objects.equals(categoryKind, LandingISConstant.CATEGORY_KIND_IMPORT)
+            && !Objects.equals(categoryKind, LandingISConstant.CATEGORY_KIND_EXPORT)
+                && !Objects.equals(categoryKind, LandingISConstant.CATEGORY_KIND_PRODUCT)
+                && !Objects.equals(categoryKind, LandingISConstant.CATEGORY_KIND_COLLABORATOR_PRODUCT)
+                && !Objects.equals(categoryKind, LandingISConstant.CATEGORY_KIND_NEWS_INTERNAL)
+                && !Objects.equals(categoryKind, LandingISConstant.CATEGORY_KIND_NEWS_COLLABORATOR)
+        ) {
             return false;
         }
         return true;
