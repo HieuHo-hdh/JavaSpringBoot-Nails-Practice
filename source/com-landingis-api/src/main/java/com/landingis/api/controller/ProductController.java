@@ -5,16 +5,17 @@ import com.landingis.api.dto.ApiMessageDto;
 import com.landingis.api.dto.ErrorCode;
 import com.landingis.api.dto.ResponseListObj;
 import com.landingis.api.dto.product.ProductDto;
+import com.landingis.api.dto.product.ProductsByCategoryDto;
 import com.landingis.api.exception.RequestException;
 import com.landingis.api.form.product.UpdateProductForm;
 import com.landingis.api.form.product.CreateProductForm;
-import com.landingis.api.form.product.UpdateProductForm;
+import com.landingis.api.mapper.CategoryMapper;
 import com.landingis.api.mapper.ProductMapper;
 import com.landingis.api.service.LandingIsApiService;
+import com.landingis.api.storage.criteria.CategoryCriteria;
 import com.landingis.api.storage.criteria.ProductCriteria;
 import com.landingis.api.storage.model.Product;
 import com.landingis.api.storage.model.Category;
-import com.landingis.api.storage.model.Product;
 import com.landingis.api.storage.repository.CategoryRepository;
 import com.landingis.api.storage.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -40,6 +42,9 @@ public class ProductController extends ABasicController {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    CategoryMapper categoryMapper;
 
     @Autowired
     ProductMapper productMapper;
@@ -60,6 +65,52 @@ public class ProductController extends ABasicController {
         responseListObj.setPage(pageable.getPageNumber());
         responseListObj.setTotalPage(listProduct.getTotalPages());
         responseListObj.setTotalElements(listProduct.getTotalElements());
+
+        responseListObjApiMessageDto.setData(responseListObj);
+        responseListObjApiMessageDto.setMessage("Get list success");
+        return responseListObjApiMessageDto;
+    }
+
+    @GetMapping(value = "/products-by-category", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<ResponseListObj<ProductsByCategoryDto>> productsByCategory(CategoryCriteria categoryCriteria, Pageable pageable) {
+        if (!isAdmin()) {
+            throw new RequestException(ErrorCode.PRODUCT_ERROR_UNAUTHORIZED, "Not allowed get list.");
+        }
+
+        ApiMessageDto<ResponseListObj<ProductsByCategoryDto>> responseListObjApiMessageDto = new ApiMessageDto<>();
+
+
+        categoryCriteria.setKind(LandingISConstant.CATEGORY_KIND_PRODUCT);
+        categoryCriteria.setStatus(LandingISConstant.STATUS_ACTIVE);
+        //Get all category
+        Page <Category> listCategory = categoryRepository.findAll(categoryCriteria.getSpecification(), pageable);
+
+        //Get all productByCategory
+        List<ProductsByCategoryDto> productsByCategoryDtoList = categoryMapper.fromEntityListToProductsByCategoryDtoList(listCategory.getContent());
+        for(int i = 0; i < productsByCategoryDtoList.size(); i++)
+        {
+            //Get each productByCategory with its index - get(index)
+            ProductsByCategoryDto productsByCategoryDto = productsByCategoryDtoList.get(i);
+
+            //Select list of Product by CategoryId and have Active Status
+            List <Product> productList;
+            productList = productRepository.getProductByCategoryIdActiveStatus(productsByCategoryDto.getId(), LandingISConstant.STATUS_ACTIVE);
+
+            //Map into ProductDto
+            List <ProductDto> productDtoList = productMapper.fromEntityListToProductDtoList(productList);
+
+            //Set productList
+            productsByCategoryDto.setProductList(productDtoList);
+
+            //Set back into productByCategory
+            productsByCategoryDtoList.set(i, productsByCategoryDto);
+        }
+
+        ResponseListObj<ProductsByCategoryDto> responseListObj = new ResponseListObj<>();
+        responseListObj.setData(productsByCategoryDtoList);
+        responseListObj.setPage(pageable.getPageNumber());
+        responseListObj.setTotalPage(listCategory.getTotalPages());
+        responseListObj.setTotalElements(listCategory.getTotalElements());
 
         responseListObjApiMessageDto.setData(responseListObj);
         responseListObjApiMessageDto.setMessage("Get list success");

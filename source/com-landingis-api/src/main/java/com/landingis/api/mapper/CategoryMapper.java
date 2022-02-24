@@ -1,6 +1,7 @@
 package com.landingis.api.mapper;
 
 import com.landingis.api.dto.category.CategoryDto;
+import com.landingis.api.dto.product.ProductsByCategoryDto;
 import com.landingis.api.form.category.CreateCategoryForm;
 import com.landingis.api.form.category.UpdateCategoryForm;
 import com.landingis.api.storage.model.Category;
@@ -49,7 +50,6 @@ public interface CategoryMapper {
     @IterableMapping(elementTargetType = CategoryDto.class, qualifiedByName = "adminGetMapping")
     List<CategoryDto> fromEntityListToCategoryDtoList(List<Category> categories);
 
-
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "categoryName")
     @Mapping(source = "image", target = "categoryImage")
@@ -59,4 +59,15 @@ public interface CategoryMapper {
 
     @IterableMapping(elementTargetType = CategoryDto.class, qualifiedByName = "adminAutoCompleteMapping")
     List<CategoryDto> fromEntityListToCategoryDtoAutoComplete(List<Category> categories);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "categoryName")
+    @Mapping(source = "image", target = "categoryImage")
+    @Mapping(source = "status", target = "status")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("adminGetProductsByCategoryMapping")
+    ProductsByCategoryDto fromEntityToProductsByCategoryDto(Category category);
+
+    @IterableMapping(elementTargetType = ProductsByCategoryDto.class, qualifiedByName = "adminGetProductsByCategoryMapping")
+    List<ProductsByCategoryDto> fromEntityListToProductsByCategoryDtoList(List<Category> categories);
 }

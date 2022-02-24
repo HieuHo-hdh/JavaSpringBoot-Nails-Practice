@@ -1,6 +1,7 @@
 package com.landingis.api.mapper;
 
 import com.landingis.api.dto.category.CategoryDto;
+import com.landingis.api.dto.product.ProductsByCategoryDto;
 import com.landingis.api.form.category.CreateCategoryForm;
 import com.landingis.api.form.category.UpdateCategoryForm;
 import com.landingis.api.storage.model.Category;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-09T10:35:58+0700",
+    date = "2022-02-24T18:24:45+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -122,6 +123,38 @@ public class CategoryMapperImpl implements CategoryMapper {
         List<CategoryDto> list = new ArrayList<CategoryDto>( categories.size() );
         for ( Category category : categories ) {
             list.add( fromEntityToAdminDtoAutoComplete( category ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public ProductsByCategoryDto fromEntityToProductsByCategoryDto(Category category) {
+        if ( category == null ) {
+            return null;
+        }
+
+        ProductsByCategoryDto productsByCategoryDto = new ProductsByCategoryDto();
+
+        if ( category.getImage() != null ) {
+            productsByCategoryDto.setCategoryImage( Double.parseDouble( category.getImage() ) );
+        }
+        productsByCategoryDto.setId( category.getId() );
+        productsByCategoryDto.setCategoryName( category.getName() );
+        productsByCategoryDto.setStatus( category.getStatus() );
+
+        return productsByCategoryDto;
+    }
+
+    @Override
+    public List<ProductsByCategoryDto> fromEntityListToProductsByCategoryDtoList(List<Category> categories) {
+        if ( categories == null ) {
+            return null;
+        }
+
+        List<ProductsByCategoryDto> list = new ArrayList<ProductsByCategoryDto>( categories.size() );
+        for ( Category category : categories ) {
+            list.add( fromEntityToProductsByCategoryDto( category ) );
         }
 
         return list;
