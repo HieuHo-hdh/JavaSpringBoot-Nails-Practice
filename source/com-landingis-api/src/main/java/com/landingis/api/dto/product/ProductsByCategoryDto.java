@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 public class ProductsByCategoryDto extends ABasicAdminDto {
     private String categoryName;
-    private Double categoryImage;
+    private String categoryImage;
     private List<ProductDto> productList;
 }

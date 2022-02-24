@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-24T16:24:55+0700",
+    date = "2022-02-24T20:52:37+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -69,6 +69,9 @@ public class ProductMapperImpl implements ProductMapper {
         if ( updateProductForm.getSaleOff() != null ) {
             product.setSaleOff( updateProductForm.getSaleOff() );
         }
+        if ( updateProductForm.getStatus() != null ) {
+            product.setStatus( updateProductForm.getStatus() );
+        }
     }
 
     @Override
@@ -87,7 +90,7 @@ public class ProductMapperImpl implements ProductMapper {
             productDto.setParentId( id.intValue() );
         }
         productDto.setLabelColor( product.getLabelColor() );
-        productDto.setProductChilds( productListToProductDtoList( product.getProductList() ) );
+        productDto.setProductChilds( fromEntityListToProductDtoList( product.getProductList() ) );
         productDto.setCreatedDate( product.getCreatedDate() );
         productDto.setCreatedBy( product.getCreatedBy() );
         productDto.setPrice( product.getPrice() );
@@ -98,6 +101,7 @@ public class ProductMapperImpl implements ProductMapper {
         productDto.setId( product.getId() );
         productDto.setSaleOff( product.getSaleOff() );
         productDto.setCategoryId( productCategoryId( product ) );
+        productDto.setStatus( product.getStatus() );
 
         return productDto;
     }
@@ -118,7 +122,7 @@ public class ProductMapperImpl implements ProductMapper {
             productDto.setParentId( id.intValue() );
         }
         productDto.setLabelColor( product.getLabelColor() );
-        productDto.setProductChilds( productListToProductDtoList( product.getProductList() ) );
+        productDto.setProductChilds( fromEntityListToProductDtoList( product.getProductList() ) );
         productDto.setCreatedDate( product.getCreatedDate() );
         productDto.setCreatedBy( product.getCreatedBy() );
         productDto.setPrice( product.getPrice() );
@@ -129,6 +133,7 @@ public class ProductMapperImpl implements ProductMapper {
         productDto.setId( product.getId() );
         productDto.setSaleOff( product.getSaleOff() );
         productDto.setCategoryId( productCategoryId( product ) );
+        productDto.setStatus( product.getStatus() );
 
         return productDto;
     }
@@ -159,6 +164,7 @@ public class ProductMapperImpl implements ProductMapper {
         productDto.setId( product.getId() );
         productDto.setSaleOff( product.getSaleOff() );
         productDto.setCategoryId( productCategoryId( product ) );
+        productDto.setStatus( product.getStatus() );
 
         return productDto;
     }
@@ -203,6 +209,7 @@ public class ProductMapperImpl implements ProductMapper {
         productDto.setId( product.getId() );
         productDto.setSaleOff( product.getSaleOff() );
         productDto.setCategoryId( productCategoryId( product ) );
+        productDto.setStatus( product.getStatus() );
 
         return productDto;
     }
@@ -246,44 +253,6 @@ public class ProductMapperImpl implements ProductMapper {
             return null;
         }
         return id;
-    }
-
-    protected ProductDto productToProductDto(Product product) {
-        if ( product == null ) {
-            return null;
-        }
-
-        ProductDto productDto = new ProductDto();
-
-        productDto.setId( product.getId() );
-        productDto.setStatus( product.getStatus() );
-        productDto.setModifiedDate( product.getModifiedDate() );
-        productDto.setCreatedDate( product.getCreatedDate() );
-        productDto.setModifiedBy( product.getModifiedBy() );
-        productDto.setCreatedBy( product.getCreatedBy() );
-        productDto.setName( product.getName() );
-        productDto.setPrice( product.getPrice() );
-        productDto.setImage( product.getImage() );
-        productDto.setDescription( product.getDescription() );
-        productDto.setShortDescription( product.getShortDescription() );
-        productDto.setHasChild( product.getHasChild() );
-        productDto.setLabelColor( product.getLabelColor() );
-        productDto.setSaleOff( product.getSaleOff() );
-
-        return productDto;
-    }
-
-    protected List<ProductDto> productListToProductDtoList(List<Product> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<ProductDto> list1 = new ArrayList<ProductDto>( list.size() );
-        for ( Product product : list ) {
-            list1.add( productToProductDto( product ) );
-        }
-
-        return list1;
     }
 
     private Long productCategoryId(Product product) {

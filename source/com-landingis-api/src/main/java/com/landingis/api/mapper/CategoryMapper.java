@@ -64,6 +64,7 @@ public interface CategoryMapper {
     @Mapping(source = "name", target = "categoryName")
     @Mapping(source = "image", target = "categoryImage")
     @Mapping(source = "status", target = "status")
+//    @Mapping(source = "productList", target = "productList")
     @BeanMapping(ignoreByDefault = true)
     @Named("adminGetProductsByCategoryMapping")
     ProductsByCategoryDto fromEntityToProductsByCategoryDto(Category category);

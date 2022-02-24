@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-24T18:24:45+0700",
+    date = "2022-02-24T20:48:10+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -136,9 +136,7 @@ public class CategoryMapperImpl implements CategoryMapper {
 
         ProductsByCategoryDto productsByCategoryDto = new ProductsByCategoryDto();
 
-        if ( category.getImage() != null ) {
-            productsByCategoryDto.setCategoryImage( Double.parseDouble( category.getImage() ) );
-        }
+        productsByCategoryDto.setCategoryImage( category.getImage() );
         productsByCategoryDto.setId( category.getId() );
         productsByCategoryDto.setCategoryName( category.getName() );
         productsByCategoryDto.setStatus( category.getStatus() );

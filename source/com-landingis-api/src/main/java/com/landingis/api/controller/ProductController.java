@@ -94,7 +94,7 @@ public class ProductController extends ABasicController {
 
             //Select list of Product by CategoryId and have Active Status
             List <Product> productList;
-            productList = productRepository.getProductByCategoryIdActiveStatus(productsByCategoryDto.getId(), LandingISConstant.STATUS_ACTIVE);
+            productList = productRepository.findByCategoryIdAndStatusOrderByIdAsc(productsByCategoryDto.getId(), LandingISConstant.STATUS_ACTIVE);
 
             //Map into ProductDto
             List <ProductDto> productDtoList = productMapper.fromEntityListToProductDtoList(productList);

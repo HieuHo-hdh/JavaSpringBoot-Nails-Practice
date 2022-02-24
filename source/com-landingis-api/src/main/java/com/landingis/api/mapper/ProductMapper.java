@@ -35,6 +35,7 @@ public interface ProductMapper {
     @Mapping(source = "shortDescription", target = "shortDescription")
     @Mapping(source = "saleOff", target = "saleOff")
     @Mapping(source = "labelColor", target = "labelColor")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("productUpdateMapping")
     void fromUpdateProductFormToEntity(UpdateProductForm updateProductForm, @MappingTarget Product product);
@@ -53,11 +54,12 @@ public interface ProductMapper {
     @Mapping(source = "saleOff", target = "saleOff")
     @Mapping(source = "hasChild", target = "hasChild")
     @Mapping(source = "labelColor", target = "labelColor")
-    @Mapping(source = "productList", target = "productChilds")
+    @Mapping(source = "productList", target = "productChilds", qualifiedByName = "getProductListMapping")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedBy", target = "modifiedBy")
     @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("productMapping")
     ProductDto fromEntityToProductDto(Product product);
@@ -73,11 +75,12 @@ public interface ProductMapper {
     @Mapping(source = "saleOff", target = "saleOff")
     @Mapping(source = "hasChild", target = "hasChild")
     @Mapping(source = "labelColor", target = "labelColor")
-    @Mapping(source = "productList", target = "productChilds")
+    @Mapping(source = "productList", target = "productChilds", qualifiedByName = "getProductListMapping")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedBy", target = "modifiedBy")
     @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("clientProductMapping")
     ProductDto fromEntityToClientProductDto(Product product);
@@ -97,6 +100,7 @@ public interface ProductMapper {
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedBy", target = "modifiedBy")
     @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("productListMapping")
     ProductDto fromEntityListToProductDtoListNotDescription(Product product);
@@ -120,6 +124,7 @@ public interface ProductMapper {
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedBy", target = "modifiedBy")
     @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("productListAutoCompleteMapping")
     ProductDto fromEntityListToProductDtoAutoComplete(Product product);
