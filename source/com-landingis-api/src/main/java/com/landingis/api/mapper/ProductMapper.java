@@ -35,7 +35,6 @@ public interface ProductMapper {
     @Mapping(source = "shortDescription", target = "shortDescription")
     @Mapping(source = "saleOff", target = "saleOff")
     @Mapping(source = "labelColor", target = "labelColor")
-    @Mapping(source = "categoryId", target = "category.id")
     @BeanMapping(ignoreByDefault = true)
     @Named("productUpdateMapping")
     void fromUpdateProductFormToEntity(UpdateProductForm updateProductForm, @MappingTarget Product product);
@@ -64,6 +63,27 @@ public interface ProductMapper {
     @Named("productMapping")
     ProductDto fromEntityToProductDto(Product product);
 
-    @IterableMapping(elementTargetType = ProductDto.class, qualifiedByName = "productMapping")
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "category.id", target = "categoryId")
+    @Mapping(source = "parentProduct.id", target = "parentId")
+
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "image", target = "image")
+    @Mapping(source = "shortDescription", target = "shortDescription")
+    @Mapping(source = "saleOff", target = "saleOff")
+    @Mapping(source = "hasChild", target = "hasChild")
+    @Mapping(source = "labelColor", target = "labelColor")
+    @Mapping(source = "productList", target = "productChilds")
+    @Mapping(source = "modifiedDate", target = "modifiedDate")
+    @Mapping(source = "createdDate", target = "createdDate")
+    @Mapping(source = "modifiedBy", target = "modifiedBy")
+    @Mapping(source = "createdBy", target = "createdBy")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("productListMapping")
+    ProductDto fromEntityListToProductDtoListNotDescription(Product product);
+
+    @IterableMapping(elementTargetType = ProductDto.class, qualifiedByName = "productListMapping")
     List<ProductDto> fromEntityListToProductDtoList(List<Product> content);
 }

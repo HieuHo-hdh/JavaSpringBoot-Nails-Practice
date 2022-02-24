@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-23T13:12:50+0700",
+    date = "2022-02-24T11:00:28+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -45,10 +45,6 @@ public class ProductMapperImpl implements ProductMapper {
             return;
         }
 
-        if ( product.getCategory() == null ) {
-            product.setCategory( new Category() );
-        }
-        updateProductFormToCategory( updateProductForm, product.getCategory() );
         if ( updateProductForm.getProductImage() != null ) {
             product.setImage( updateProductForm.getProductImage() );
         }
@@ -107,6 +103,36 @@ public class ProductMapperImpl implements ProductMapper {
     }
 
     @Override
+    public ProductDto fromEntityListToProductDtoListNotDescription(Product product) {
+        if ( product == null ) {
+            return null;
+        }
+
+        ProductDto productDto = new ProductDto();
+
+        productDto.setImage( product.getImage() );
+        productDto.setShortDescription( product.getShortDescription() );
+        Long id = productParentProductId( product );
+        if ( id != null ) {
+            productDto.setParentId( id.intValue() );
+        }
+        productDto.setLabelColor( product.getLabelColor() );
+        productDto.setProductChilds( fromEntityListToProductDtoList( product.getProductList() ) );
+        productDto.setCreatedDate( product.getCreatedDate() );
+        productDto.setCreatedBy( product.getCreatedBy() );
+        productDto.setPrice( product.getPrice() );
+        productDto.setHasChild( product.getHasChild() );
+        productDto.setName( product.getName() );
+        productDto.setModifiedDate( product.getModifiedDate() );
+        productDto.setModifiedBy( product.getModifiedBy() );
+        productDto.setId( product.getId() );
+        productDto.setSaleOff( product.getSaleOff() );
+        productDto.setCategoryId( productCategoryId( product ) );
+
+        return productDto;
+    }
+
+    @Override
     public List<ProductDto> fromEntityListToProductDtoList(List<Product> content) {
         if ( content == null ) {
             return null;
@@ -114,7 +140,7 @@ public class ProductMapperImpl implements ProductMapper {
 
         List<ProductDto> list = new ArrayList<ProductDto>( content.size() );
         for ( Product product : content ) {
-            list.add( fromEntityToProductDto( product ) );
+            list.add( fromEntityListToProductDtoListNotDescription( product ) );
         }
 
         return list;
@@ -130,16 +156,6 @@ public class ProductMapperImpl implements ProductMapper {
         category.setId( createProductForm.getCategoryId() );
 
         return category;
-    }
-
-    protected void updateProductFormToCategory(UpdateProductForm updateProductForm, Category mappingTarget) {
-        if ( updateProductForm == null ) {
-            return;
-        }
-
-        if ( updateProductForm.getCategoryId() != null ) {
-            mappingTarget.setId( updateProductForm.getCategoryId() );
-        }
     }
 
     private Long productParentProductId(Product product) {

@@ -18,6 +18,7 @@ import com.landingis.api.storage.model.Product;
 import com.landingis.api.storage.repository.CategoryRepository;
 import com.landingis.api.storage.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -124,10 +125,16 @@ public class ProductController extends ABasicController {
         {
             throw new RequestException(ErrorCode.PRODUCT_ERROR_NOT_FOUND, "Not found product.");
         }
+
         Category category = categoryRepository.findById(updateProductForm.getCategoryId()).orElse(null);
         if(category == null || !Objects.equals(category.getStatus(), LandingISConstant.STATUS_ACTIVE)) {
             throw new RequestException(ErrorCode.PRODUCT_ERROR_NOT_FOUND_CATEGORY, "Not found category.");
         }
+
+        if(StringUtils.isNoneBlank(product.getImage()) && !updateProductForm.getProductImage().equals(product.getImage())) {
+            landingIsApiService.deleteFile(product.getImage());
+        }
+
         productMapper.fromUpdateProductFormToEntity(updateProductForm, product);
         productRepository.save(product);
         apiMessageDto.setMessage("Update product success");
@@ -158,6 +165,7 @@ public class ProductController extends ABasicController {
             }
         }
 
+        landingIsApiService.deleteFile(product.getImage());
         productRepository.delete(product);
         result.setMessage("Delete Product Success");
         return result;
