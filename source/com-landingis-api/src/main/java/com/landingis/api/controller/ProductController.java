@@ -27,6 +27,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @RestController
@@ -65,6 +66,16 @@ public class ProductController extends ABasicController {
         return responseListObjApiMessageDto;
     }
 
+    @GetMapping(value = "/auto-complete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<ResponseListObj<ProductDto>> autocomplete(ProductCriteria productCriteria) {
+        ApiMessageDto<ResponseListObj<ProductDto>> responseListObjApiMessageDto = new ApiMessageDto<>();
+        Page<Product> listProduct = productRepository.findAll(productCriteria.getSpecification(), Pageable.unpaged()); //Use Pageable.unpaged()
+        ResponseListObj<ProductDto> responseListObj = new ResponseListObj<>();
+        responseListObj.setData(productMapper.fromEntityListToProductDtoAutoComplete(listProduct.getContent()));
+        responseListObjApiMessageDto.setData(responseListObj);
+        responseListObjApiMessageDto.setMessage("Get auto-complete success");
+        return responseListObjApiMessageDto;
+    }
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<ProductDto> get(@PathVariable("id") Long id) {
@@ -78,6 +89,23 @@ public class ProductController extends ABasicController {
             throw new RequestException(ErrorCode.PRODUCT_ERROR_NOT_FOUND, "Not found product.");
         }
         result.setData(productMapper.fromEntityToProductDto(product));
+        result.setMessage("Get product success");
+        return result;
+    }
+
+
+    @GetMapping(value = "/client-get", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<ProductDto> clientGet(@NotBlank @RequestParam Long productId,
+                                               @NotBlank @RequestParam Long collaboratorId)
+    {
+        ApiMessageDto<ProductDto> result = new ApiMessageDto<>();
+
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product == null)
+        {
+            throw new RequestException(ErrorCode.PRODUCT_ERROR_NOT_FOUND, "Not found product.");
+        }
+        result.setData(productMapper.fromEntityToClientProductDto(product));
         result.setMessage("Get product success");
         return result;
     }

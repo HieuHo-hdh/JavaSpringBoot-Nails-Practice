@@ -45,7 +45,6 @@ public interface ProductMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "category.id", target = "categoryId")
     @Mapping(source = "parentProduct.id", target = "parentId")
-
     @Mapping(source = "name", target = "name")
     @Mapping(source = "price", target = "price")
     @Mapping(source = "image", target = "image")
@@ -63,14 +62,13 @@ public interface ProductMapper {
     @Named("productMapping")
     ProductDto fromEntityToProductDto(Product product);
 
-
     @Mapping(source = "id", target = "id")
     @Mapping(source = "category.id", target = "categoryId")
     @Mapping(source = "parentProduct.id", target = "parentId")
-
     @Mapping(source = "name", target = "name")
     @Mapping(source = "price", target = "price")
     @Mapping(source = "image", target = "image")
+    @Mapping(source = "description", target = "description")
     @Mapping(source = "shortDescription", target = "shortDescription")
     @Mapping(source = "saleOff", target = "saleOff")
     @Mapping(source = "hasChild", target = "hasChild")
@@ -81,9 +79,52 @@ public interface ProductMapper {
     @Mapping(source = "modifiedBy", target = "modifiedBy")
     @Mapping(source = "createdBy", target = "createdBy")
     @BeanMapping(ignoreByDefault = true)
+    @Named("clientProductMapping")
+    ProductDto fromEntityToClientProductDto(Product product);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "category.id", target = "categoryId")
+    @Mapping(source = "parentProduct.id", target = "parentId")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "image", target = "image")
+    @Mapping(source = "shortDescription", target = "shortDescription")
+    @Mapping(source = "saleOff", target = "saleOff")
+    @Mapping(source = "hasChild", target = "hasChild")
+    @Mapping(source = "labelColor", target = "labelColor")
+    @Mapping(source = "productList", target = "productChilds", qualifiedByName = "getProductListMapping")
+    @Mapping(source = "modifiedDate", target = "modifiedDate")
+    @Mapping(source = "createdDate", target = "createdDate")
+    @Mapping(source = "modifiedBy", target = "modifiedBy")
+    @Mapping(source = "createdBy", target = "createdBy")
+    @BeanMapping(ignoreByDefault = true)
     @Named("productListMapping")
     ProductDto fromEntityListToProductDtoListNotDescription(Product product);
 
     @IterableMapping(elementTargetType = ProductDto.class, qualifiedByName = "productListMapping")
+    @Named("getProductListMapping")
     List<ProductDto> fromEntityListToProductDtoList(List<Product> content);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "category.id", target = "categoryId")
+    @Mapping(source = "parentProduct.id", target = "parentId")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "image", target = "image")
+    @Mapping(source = "shortDescription", target = "shortDescription")
+    @Mapping(source = "saleOff", target = "saleOff")
+    @Mapping(source = "hasChild", target = "hasChild")
+    @Mapping(source = "labelColor", target = "labelColor")
+    @Mapping(source = "productList", target = "productChilds", qualifiedByName = "getAutoCompleteListMapping")
+    @Mapping(source = "modifiedDate", target = "modifiedDate")
+    @Mapping(source = "createdDate", target = "createdDate")
+    @Mapping(source = "modifiedBy", target = "modifiedBy")
+    @Mapping(source = "createdBy", target = "createdBy")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("productListAutoCompleteMapping")
+    ProductDto fromEntityListToProductDtoAutoComplete(Product product);
+
+    @IterableMapping(elementTargetType = ProductDto.class, qualifiedByName = "productListAutoCompleteMapping")
+    @Named("getAutoCompleteListMapping")
+    List<ProductDto> fromEntityListToProductDtoAutoComplete(List<Product> content);
 }
