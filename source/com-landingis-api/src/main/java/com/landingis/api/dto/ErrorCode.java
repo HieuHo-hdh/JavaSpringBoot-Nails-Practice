@@ -119,6 +119,13 @@ public class ErrorCode {
     public static final String PRODUCT_ERROR_NOT_FOUND_CATEGORY = "ERROR-PRODUCT-002";
     public static final String PRODUCT_ERROR_NULL_KIND = "ERROR-PRODUCT-003";
 
+    /**
+     * Orders error code
+     */
+    public static final String ORDERS_ERROR_UNAUTHORIZED = "ERROR-ORDERS-000";
+    public static final String ORDERS_ERROR_NOT_FOUND = "ERROR-ORDERS-001";
+    public static final String ORDERS_ERROR_NOT_FOUND_PRODUCT = "ERROR-ORDERS-002";
+
 
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }

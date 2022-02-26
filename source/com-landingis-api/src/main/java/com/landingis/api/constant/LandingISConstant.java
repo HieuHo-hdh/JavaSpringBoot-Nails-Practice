@@ -53,6 +53,15 @@ public class LandingISConstant {
     public static final Integer SETTING_GROUP_ID_ADMIN = 1;
     public static final Integer SETTING_GROUP_ID_CUSTOMER = 2;
 
+    public static final Integer ORDERS_STATE_CREATED = 0;
+    public static final Integer ORDERS_STATE_ACCEPTED = 1;
+    public static final Integer ORDERS_STATE_SHIPPING = 2;
+    public static final Integer ORDERS_STATE_DONE = 3;
+    public static final Integer ORDERS_STATE_CANCEL = 4;
+
+    public static final Integer VAT = 10;
+
+
     private LandingISConstant(){
         throw new IllegalStateException("Utility class");
     }
