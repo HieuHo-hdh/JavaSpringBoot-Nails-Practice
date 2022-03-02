@@ -2,6 +2,7 @@ package com.landingis.api.mapper;
 
 import com.landingis.api.dto.orders.OrdersDto;
 import com.landingis.api.form.orders.CreateOrdersDetailForm;
+import com.landingis.api.form.orders.UpdateOrdersDetailForm;
 import com.landingis.api.storage.model.Orders;
 import com.landingis.api.storage.model.OrdersDetail;
 import com.landingis.api.storage.model.Product;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-26T17:29:17+0700",
+    date = "2022-03-02T11:55:16+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -45,6 +46,31 @@ public class OrdersDetailMapperImpl implements OrdersDetailMapper {
         }
 
         return list;
+    }
+
+    @Override
+    public void fromUpdateOrdersDetailFormToEntity(UpdateOrdersDetailForm updateOrdersDetailForm, OrdersDetail ordersDetail) {
+        if ( updateOrdersDetailForm == null ) {
+            return;
+        }
+
+        if ( ordersDetail.getProduct() == null ) {
+            ordersDetail.setProduct( new Product() );
+        }
+        updateOrdersDetailFormToProduct( updateOrdersDetailForm, ordersDetail.getProduct() );
+        if ( ordersDetail.getOrders() == null ) {
+            ordersDetail.setOrders( new Orders() );
+        }
+        updateOrdersDetailFormToOrders( updateOrdersDetailForm, ordersDetail.getOrders() );
+        if ( updateOrdersDetailForm.getNote() != null ) {
+            ordersDetail.setNote( updateOrdersDetailForm.getNote() );
+        }
+        if ( updateOrdersDetailForm.getAmount() != null ) {
+            ordersDetail.setAmount( updateOrdersDetailForm.getAmount() );
+        }
+        if ( updateOrdersDetailForm.getId() != null ) {
+            ordersDetail.setId( updateOrdersDetailForm.getId() );
+        }
     }
 
     @Override
@@ -98,5 +124,25 @@ public class OrdersDetailMapperImpl implements OrdersDetailMapper {
         product.setId( createOrdersDetailForm.getProductId() );
 
         return product;
+    }
+
+    protected void updateOrdersDetailFormToProduct(UpdateOrdersDetailForm updateOrdersDetailForm, Product mappingTarget) {
+        if ( updateOrdersDetailForm == null ) {
+            return;
+        }
+
+        if ( updateOrdersDetailForm.getProductId() != null ) {
+            mappingTarget.setId( updateOrdersDetailForm.getProductId() );
+        }
+    }
+
+    protected void updateOrdersDetailFormToOrders(UpdateOrdersDetailForm updateOrdersDetailForm, Orders mappingTarget) {
+        if ( updateOrdersDetailForm == null ) {
+            return;
+        }
+
+        if ( updateOrdersDetailForm.getOrdersId() != null ) {
+            mappingTarget.setId( updateOrdersDetailForm.getOrdersId() );
+        }
     }
 }

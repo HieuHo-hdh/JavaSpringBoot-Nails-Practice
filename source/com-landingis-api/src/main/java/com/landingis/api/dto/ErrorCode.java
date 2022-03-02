@@ -125,6 +125,10 @@ public class ErrorCode {
     public static final String ORDERS_ERROR_UNAUTHORIZED = "ERROR-ORDERS-000";
     public static final String ORDERS_ERROR_NOT_FOUND = "ERROR-ORDERS-001";
     public static final String ORDERS_ERROR_NOT_FOUND_PRODUCT = "ERROR-ORDERS-002";
+    public static final String ORDERS_ERROR_WRONG_STATE_UPDATE = "ERROR-ORDERS-003";
+    public static final String ORDERS_ERROR_NOT_FOUND_ORDERS_DETAIL = "ERROR-ORDERS-004";
+    public static final String ORDERS_ERROR_UNEQUAL_NUMBER = "ERROR-ORDERS-005";
+    public static final String ORDERS_ERROR_INVALID_STATE = "ERROR-ORDERS-006";
 
 
     private ErrorCode() { throw new IllegalStateException("Utility class"); }

@@ -3,6 +3,7 @@ package com.landingis.api.mapper;
 import com.landingis.api.dto.orders.OrdersDto;
 import com.landingis.api.form.orders.CreateOrdersDetailForm;
 import com.landingis.api.form.orders.CreateOrdersForm;
+import com.landingis.api.form.orders.UpdateOrdersDetailForm;
 import com.landingis.api.storage.model.Orders;
 import com.landingis.api.storage.model.OrdersDetail;
 import org.mapstruct.*;
@@ -21,8 +22,30 @@ public interface OrdersDetailMapper {
     @Named("ordersCreateMapping")
     OrdersDetail fromCreateOrdersFormToEntity(CreateOrdersDetailForm createOrdersForm);
 
-    @IterableMapping(elementTargetType = OrdersDetail.class, qualifiedByName = "adminCreateMapping")
+    @IterableMapping(elementTargetType = OrdersDetail.class, qualifiedByName = "ordersCreateMapping")
     List<OrdersDetail> fromCreateOrdersFormToEntityList(List<CreateOrdersDetailForm> createOrdersDetailFormList);
+
+//    @Mapping(source = "id", target = "id")
+//    @Mapping(source = "productId", target = "product.id")
+//    @Mapping(source = "amount", target = "amount")
+//    @Mapping(source = "ordersId", target = "ordersId")
+//    //    @Mapping(source = "ordersId", target = "orders.id") //ordersId
+//    @Mapping(source = "note", target = "note")
+//    @BeanMapping(ignoreByDefault = true)
+//    @Named("ordersUpdateMapping")
+//    OrdersDetail fromUpdateOrdersFormToEntity(UpdateOrdersDetailForm updateOrdersDetailForm);
+//
+//    @IterableMapping(elementTargetType = OrdersDetail.class, qualifiedByName = "ordersUpdateMapping")
+//    List<OrdersDetail> fromUpdateOrdersFormToEntityList(List<UpdateOrdersDetailForm> updateOrdersDetailFormList);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "productId", target = "product.id")
+    @Mapping(source = "ordersId", target = "orders.id")
+    @Mapping(source = "amount", target = "amount")
+    @Mapping(source = "note", target = "note")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("adminUpdateMapping")
+    void fromUpdateOrdersDetailFormToEntity(UpdateOrdersDetailForm updateOrdersDetailForm, @MappingTarget OrdersDetail ordersDetail);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "totalMoney", target = "totalMoney")

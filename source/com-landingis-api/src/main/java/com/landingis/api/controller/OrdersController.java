@@ -4,10 +4,10 @@ import com.landingis.api.constant.LandingISConstant;
 import com.landingis.api.dto.ApiMessageDto;
 import com.landingis.api.dto.ErrorCode;
 import com.landingis.api.dto.ResponseListObj;
+import com.landingis.api.dto.orders.OrdersDetailDto;
 import com.landingis.api.dto.orders.OrdersDto;
 import com.landingis.api.exception.RequestException;
-import com.landingis.api.form.orders.CreateOrdersDetailForm;
-import com.landingis.api.form.orders.CreateOrdersForm;
+import com.landingis.api.form.orders.*;
 import com.landingis.api.mapper.AccountMapper;
 import com.landingis.api.mapper.OrdersDetailMapper;
 import com.landingis.api.mapper.OrdersMapper;
@@ -83,6 +83,7 @@ public class OrdersController extends ABasicController{
         responseListObjApiMessageDto.setMessage("List orders success");
         return responseListObjApiMessageDto;
     }
+
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<OrdersDto> get(@PathVariable("id") Long id)
     {
@@ -104,7 +105,6 @@ public class OrdersController extends ABasicController{
 
     //If phone is new, not belongs to any customers => create a customer with that phone
     //Else => return found customer
-
     private Customer createNewCustomerWithPhoneNotFound (String phone, String email, String address, String fullName)
     {
         Customer customer = customerRepository.findByAccountPhone(phone);
@@ -216,6 +216,135 @@ public class OrdersController extends ABasicController{
 
     }
 
+    @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<String> update (@Valid @RequestBody UpdateOrdersForm updateOrdersForm, BindingResult bindingResult)
+    {
+        if (!isAdmin()) {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_UNAUTHORIZED, "Not allow to create");
+        }
+
+        Orders orders = ordersRepository.findById(updateOrdersForm.getId()).orElse(null);
+        if(orders == null) {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_NOT_FOUND, "Not found orders.");
+        }
+
+        //Only state ORDERS_STATE_CREATED is updatable
+        if (orders.getState() !=  LandingISConstant.ORDERS_STATE_CREATED)
+        {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_WRONG_STATE_UPDATE, "Cannot update with invalid order state");
+        }
+        List<OrdersDetail> ordersDetailList = ordersDetailRepository.findByOrdersId(orders.getId());
+        List<UpdateOrdersDetailForm> updatingOrdersDetailFormList = updateOrdersForm.getOrdersDetailDtos();
+        List<UpdateOrdersDetailForm> deletingOrdersDetailFormList = updateOrdersForm.getDeletingOrdersDetailsDtos();
+
+        //Check number of array elements if old array = update array + delete array
+        //For eg: old array (a, b, c); update array: a; delete array: b, c
+        if (deletingOrdersDetailFormList == null || deletingOrdersDetailFormList.isEmpty())
+        {
+            if (updatingOrdersDetailFormList.isEmpty() || updatingOrdersDetailFormList.size() != ordersDetailList.size())
+                throw new RequestException(ErrorCode.ORDERS_ERROR_UNEQUAL_NUMBER, "Unequal number of updating orders");
+        }
+        else if (updatingOrdersDetailFormList.isEmpty()
+                || updatingOrdersDetailFormList.size() + deletingOrdersDetailFormList.size() != ordersDetailList.size())
+            throw new RequestException(ErrorCode.ORDERS_ERROR_UNEQUAL_NUMBER, "Unequal number of updating orders");
+
+        //Create new customer account if phone doesn't exist
+        orders.setCustomer(createNewCustomerWithPhoneNotFound(
+                updateOrdersForm.getCustomerPhone(),
+                updateOrdersForm.getCustomerEmail(),
+                updateOrdersForm.getOrdersAddress(),
+                updateOrdersForm.getCustomerFullName()));
 
 
+        //Updating orders detail
+        for (Integer i = 0; i < updatingOrdersDetailFormList.size(); i++) {
+            UpdateOrdersDetailForm updateOrdersDetailForm = updatingOrdersDetailFormList.get(i);
+            OrdersDetail ordersDetail = ordersDetailRepository.findById(updateOrdersDetailForm.getId()).orElse(null);
+            if (ordersDetail == null)
+            {
+                throw new RequestException(ErrorCode.ORDERS_ERROR_NOT_FOUND_ORDERS_DETAIL);
+            }
+            ordersDetailMapper.fromUpdateOrdersDetailFormToEntity(updateOrdersDetailForm, ordersDetail);
+            ordersDetailRepository.save(ordersDetail);
+        }
+
+        //Delete orders detail
+        for (Integer i = 0; i < updatingOrdersDetailFormList.size(); i++) {
+            UpdateOrdersDetailForm updateOrdersDetailForm = updatingOrdersDetailFormList.get(i);
+            OrdersDetail ordersDetail = ordersDetailRepository.findById(updateOrdersDetailForm.getId()).orElse(null);
+            if (ordersDetail == null)
+            {
+                throw new RequestException(ErrorCode.ORDERS_ERROR_NOT_FOUND_ORDERS_DETAIL);
+            }
+//            ordersDetailMapper.fromUpdateOrdersDetailFormToEntity(updateOrdersDetailForm, ordersDetail);
+            ordersDetailRepository.delete(ordersDetail);
+        }
+
+        //Update ordersAddress, ordersSaleOff
+        ordersMapper.fromUpdateOrdersFormToEntity(updateOrdersForm, orders);
+
+        //After updating and deleting orders => set total money again
+        orders.setTotalMoney(calculateTotalPriceOrders(ordersDetailList, orders.getSaleOff(), orders.getVat()));
+        ordersRepository.save(orders);
+        ApiMessageDto<String> result = new ApiMessageDto<>();
+
+        result.setMessage("Update orders customer info success");
+        return result;
+
+    }
+
+    @PutMapping(value = "/update-state", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<String> updateState(@Valid @RequestBody UpdateOrdersStateForm updateOrdersStateForm, BindingResult bindingResult) {
+        if(!isAdmin()) {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_UNAUTHORIZED, "Not allowed to update state");
+        }
+        Orders orders = ordersRepository.findById(updateOrdersStateForm.getId()).orElse(null);
+        if(orders == null) {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_NOT_FOUND, "Not found orders");
+        }
+
+        if(updateOrdersStateForm.getOrdersState() == null)
+        {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_INVALID_STATE, "Invalid state");
+        }
+
+        //Cant update state back, or cant update state to Cancel state
+        if (updateOrdersStateForm.getOrdersState() <= orders.getState()
+            || updateOrdersStateForm.getOrdersState() == LandingISConstant.ORDERS_STATE_CANCEL
+        )
+        {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_INVALID_STATE, "Invalid state to update");
+        }
+        orders.setPrevState(updateOrdersStateForm.getOrdersState());
+        ordersMapper.fromUpdateOrdersStateFormToEntity(updateOrdersStateForm, orders);
+        ordersRepository.save(orders);
+        ApiMessageDto<String> result = new ApiMessageDto<>();
+        result.setMessage("Update orders state success");
+        return result;
+    }
+
+    @PutMapping(value = "/cancel-orders", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<String> cancelOrders(@Valid @RequestBody UpdateOrdersStateForm updateOrdersStateForm, BindingResult bindingResult) {
+        if(!isAdmin()) {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_UNAUTHORIZED, "Not allowed to update state");
+        }
+        Orders orders = ordersRepository.findById(updateOrdersStateForm.getId()).orElse(null);
+        if(orders == null) {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_NOT_FOUND, "Not found orders");
+        }
+
+        //Cant cancel orders whose states are Cancel or done
+        if (orders.getState() == LandingISConstant.ORDERS_STATE_CANCEL
+            || orders.getState() == LandingISConstant.ORDERS_STATE_DONE
+        )
+        {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_INVALID_STATE, "Invalid state to cancel orders");
+        }
+        ordersMapper.fromUpdateOrdersStateFormToEntity(updateOrdersStateForm, orders);
+        orders.setState(LandingISConstant.ORDERS_STATE_CANCEL);
+        ordersRepository.save(orders);
+        ApiMessageDto<String> result = new ApiMessageDto<>();
+        result.setMessage("Cancel orders status success");
+        return result;
+    }
 }

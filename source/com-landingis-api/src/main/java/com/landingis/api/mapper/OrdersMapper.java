@@ -2,6 +2,8 @@ package com.landingis.api.mapper;
 
 import com.landingis.api.dto.orders.OrdersDto;
 import com.landingis.api.form.orders.CreateOrdersForm;
+import com.landingis.api.form.orders.UpdateOrdersForm;
+import com.landingis.api.form.orders.UpdateOrdersStateForm;
 import com.landingis.api.storage.model.Orders;
 import com.landingis.api.storage.model.Orders;
 import org.mapstruct.*;
@@ -23,6 +25,18 @@ public interface OrdersMapper {
     @Named("ordersCreateMapping")
     Orders fromCreateOrdersFormToEntity(CreateOrdersForm createOrdersForm);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "ordersAddress", target = "address")
+    @Mapping(source = "ordersSaleOff", target = "saleOff")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("ordersUpdateMapping")
+    Orders fromUpdateOrdersFormToEntity(UpdateOrdersForm updateOrdersForm, @MappingTarget Orders orders);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "ordersState", target = "state")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("ordersUpdateStateMapping")
+    void fromUpdateOrdersStateFormToEntity(UpdateOrdersStateForm updateOrdersStateForm, @MappingTarget Orders orders);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "totalMoney", target = "totalMoney")
