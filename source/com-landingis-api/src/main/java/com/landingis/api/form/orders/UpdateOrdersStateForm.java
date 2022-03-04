@@ -13,6 +13,6 @@ public class UpdateOrdersStateForm {
 
 //    @NotNull(message = "ordersState cannot be null")
 //    @ApiModelProperty(required = true)
-    @ApiModelProperty(name="orders_state")
+    @ApiModelProperty(name="ordersState")
     private Integer ordersState;
 }

@@ -14,21 +14,21 @@ public class UpdateOrdersForm {
     @ApiModelProperty(required = true)
     private Long id;
 
-    @ApiModelProperty(name = "customer_email")
+    @ApiModelProperty(name = "customerEmail")
     private String customerEmail;
 
     @NotEmpty(message="customerFullName cannot be null")
-    @ApiModelProperty(name = "customer_full_name", required = true)
+    @ApiModelProperty(name = "customerFullName", required = true)
     private String customerFullName;
 
     @NotEmpty(message="customerPhone cannot be null")
-    @ApiModelProperty(name = "customer_phone", required = true)
+    @ApiModelProperty(name = "customerPhone", required = true)
     private String customerPhone;
 
-    @ApiModelProperty(name = "orders_address")
+    @ApiModelProperty(name = "ordersAddress")
     private String ordersAddress;
 
-    @ApiModelProperty(name = "orders_sale_off")
+    @ApiModelProperty(name = "ordersSaleOff")
     private Integer ordersSaleOff;
 
     @NotEmpty(message = "ordersDetailDtoList cannot be null")
@@ -36,6 +36,6 @@ public class UpdateOrdersForm {
     private List<@Valid UpdateOrdersDetailForm> ordersDetailDtos;
 
 //    @NotEmpty(message = "ordersDetailDtoList cannot be null")
-    @ApiModelProperty(name="deleting_orders_details_dtos")
+    @ApiModelProperty(name="deletingOrdersDetailsDtos")
     private List<@Valid UpdateOrdersDetailForm> deletingOrdersDetailsDtos;
 }

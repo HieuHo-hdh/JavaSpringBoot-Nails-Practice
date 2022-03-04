@@ -14,7 +14,7 @@ public class CreateOrdersDetailForm {
     private Integer amount;
 
     @NotNull(message="productId cannot be null")
-    @ApiModelProperty(name = "product_Id", required = true)
+    @ApiModelProperty(name = "productId", required = true)
     private Long productId;
 
     @ApiModelProperty(name = "note")

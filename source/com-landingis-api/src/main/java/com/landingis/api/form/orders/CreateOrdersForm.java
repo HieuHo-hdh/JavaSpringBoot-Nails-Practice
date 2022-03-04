@@ -1,34 +1,32 @@
 package com.landingis.api.form.orders;
 
-import com.landingis.api.dto.orders.OrdersDetailDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 public class CreateOrdersForm {
-    @ApiModelProperty(name = "customer_email")
+    @ApiModelProperty(name = "customerEmail")
     private String customerEmail;
 
     @NotEmpty(message="customerFullName cannot be null")
-    @ApiModelProperty(name = "customer_full_name", required = true)
+    @ApiModelProperty(name = "customerFullName", required = true)
     private String customerFullName;
 
     @NotEmpty(message="customerPhone cannot be null")
-    @ApiModelProperty(name = "customer_phone", required = true)
+    @ApiModelProperty(name = "customerPhone", required = true)
     private String customerPhone;
 
-    @ApiModelProperty(name = "orders_address")
+    @ApiModelProperty(name = "ordersAddress")
     private String ordersAddress;
 
-    @ApiModelProperty(name = "orders_document")
+    @ApiModelProperty(name = "ordersDocument")
     private String ordersDocument;
 
-    @ApiModelProperty(name = "orders_sale_off")
+    @ApiModelProperty(name = "ordersSaleOff")
     private Integer ordersSaleOff;
 
     @NotEmpty(message = "ordersDetailDtoList cannot be null")

@@ -16,11 +16,11 @@ public class UpdateOrdersDetailForm {
     private Integer amount;
 
     @NotNull(message="productId cannot be null")
-    @ApiModelProperty(name = "product_Id", required = true)
+    @ApiModelProperty(name = "productId", required = true)
     private Long productId;
 
     @NotNull(message="ordersId cannot be null")
-    @ApiModelProperty(name = "order_Id", required = true)
+    @ApiModelProperty(name = "ordersId", required = true)
     private Long ordersId;
 
     @ApiModelProperty(name = "note")

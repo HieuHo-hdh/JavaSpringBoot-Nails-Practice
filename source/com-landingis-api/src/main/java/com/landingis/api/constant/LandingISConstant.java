@@ -61,6 +61,8 @@ public class LandingISConstant {
 
     public static final Integer VAT = 10;
 
+    public static final Integer COLLABORATOR_PRODUCT_KIND_MONEY_VALUE = 1;
+    public static final Integer COLLABORATOR_PRODUCT_KIND_PERCENT_VALUE = 2;
 
     private LandingISConstant(){
         throw new IllegalStateException("Utility class");

@@ -130,6 +130,16 @@ public class ErrorCode {
     public static final String ORDERS_ERROR_UNEQUAL_NUMBER = "ERROR-ORDERS-005";
     public static final String ORDERS_ERROR_INVALID_STATE = "ERROR-ORDERS-006";
 
+    /**
+     * Collaborator product error code
+     */
+    public static final String COLLABORATOR_PRODUCT_ERROR_UNAUTHORIZED = "ERROR-COLLABORATOR-PRODUCT-001";
+    public static final String COLLABORATOR_PRODUCT_ERROR_NOT_FOUND = "ERROR-COLLABORATOR-PRODUCT-002";
+    public static final String COLLABORATOR_PRODUCT_ERROR_NOT_FOUND_PRODUCT = "ERROR-COLLABORATOR-PRODUCT-003";
+    public static final String COLLABORATOR_PRODUCT_ERROR_NOT_FOUND_COLLABORATOR = "ERROR-COLLABORATOR-PRODUCT-004";
+    public static final String COLLABORATOR_PRODUCT_ERROR_INVALID_VALUE = "ERROR-COLLABORATOR-PRODUCT-005";
+    public static final String COLLABORATOR_PRODUCT_ERROR_INVALID_KIND = "ERROR-COLLABORATOR-PRODUCT-006";
+
 
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }
