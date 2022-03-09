@@ -2,6 +2,7 @@ package com.landingis.api.mapper;
 
 import com.landingis.api.dto.collaboratorProduct.CollaboratorProductDto;
 import com.landingis.api.form.collaboratorProduct.CreateCollaboratorProductForm;
+import com.landingis.api.form.collaboratorProduct.UpdateCollaboratorProductForm;
 import com.landingis.api.storage.model.Collaborator;
 import com.landingis.api.storage.model.CollaboratorProduct;
 import com.landingis.api.storage.model.Product;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-03-04T13:17:43+0700",
+    date = "2022-03-09T19:55:02+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -43,6 +44,37 @@ public class CollaboratorProductMapperImpl implements CollaboratorProductMapper 
         List<CollaboratorProduct> list = new ArrayList<CollaboratorProduct>( content.size() );
         for ( CreateCollaboratorProductForm createCollaboratorProductForm : content ) {
             list.add( fromCreateCollaboratorProductFormToEntity( createCollaboratorProductForm ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public void fromUpdateCollaboratorProductFormToEntity(UpdateCollaboratorProductForm updateCollaboratorProductForm, CollaboratorProduct collaboratorProduct) {
+        if ( updateCollaboratorProductForm == null ) {
+            return;
+        }
+
+        if ( updateCollaboratorProductForm.getKind() != null ) {
+            collaboratorProduct.setKind( updateCollaboratorProductForm.getKind() );
+        }
+        if ( updateCollaboratorProductForm.getId() != null ) {
+            collaboratorProduct.setId( updateCollaboratorProductForm.getId() );
+        }
+        if ( updateCollaboratorProductForm.getValue() != null ) {
+            collaboratorProduct.setValue( updateCollaboratorProductForm.getValue() );
+        }
+    }
+
+    @Override
+    public List<CollaboratorProduct> fromUpdateCollaboratorProductFormToEntityList(List<UpdateCollaboratorProductForm> content) {
+        if ( content == null ) {
+            return null;
+        }
+
+        List<CollaboratorProduct> list = new ArrayList<CollaboratorProduct>( content.size() );
+        for ( UpdateCollaboratorProductForm updateCollaboratorProductForm : content ) {
+            list.add( updateCollaboratorProductFormToCollaboratorProduct( updateCollaboratorProductForm ) );
         }
 
         return list;
@@ -104,5 +136,19 @@ public class CollaboratorProductMapperImpl implements CollaboratorProductMapper 
         product.setId( createCollaboratorProductForm.getProductId() );
 
         return product;
+    }
+
+    protected CollaboratorProduct updateCollaboratorProductFormToCollaboratorProduct(UpdateCollaboratorProductForm updateCollaboratorProductForm) {
+        if ( updateCollaboratorProductForm == null ) {
+            return null;
+        }
+
+        CollaboratorProduct collaboratorProduct = new CollaboratorProduct();
+
+        collaboratorProduct.setId( updateCollaboratorProductForm.getId() );
+        collaboratorProduct.setKind( updateCollaboratorProductForm.getKind() );
+        collaboratorProduct.setValue( updateCollaboratorProductForm.getValue() );
+
+        return collaboratorProduct;
     }
 }

@@ -19,11 +19,11 @@ public class CollaboratorProduct extends Auditable<String> {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "collaborator_id", unique = true)
+    @JoinColumn(name = "collaborator_id")
     private Collaborator collaborator;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", unique = true)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private Integer kind;

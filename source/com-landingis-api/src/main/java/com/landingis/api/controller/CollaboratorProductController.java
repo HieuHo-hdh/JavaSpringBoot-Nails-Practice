@@ -9,6 +9,8 @@ import com.landingis.api.dto.collaboratorProduct.CollaboratorProductDto;
 import com.landingis.api.exception.RequestException;
 import com.landingis.api.form.collaboratorProduct.CreateCollaboratorProductForm;
 import com.landingis.api.form.collaboratorProduct.CreateCollaboratorProductListForm;
+import com.landingis.api.form.collaboratorProduct.UpdateCollaboratorProductForm;
+import com.landingis.api.form.collaboratorProduct.UpdateCollaboratorProductListForm;
 import com.landingis.api.mapper.CollaboratorProductMapper;
 import com.landingis.api.storage.criteria.CollaboratorProductCriteria;
 import com.landingis.api.storage.model.CollaboratorProduct;
@@ -86,15 +88,14 @@ public class CollaboratorProductController extends ABasicController {
         for (Integer i = 0 ; i < createCollaboratorProductListForm.getCollaboratorProducts().size(); i++)
         {
             CreateCollaboratorProductForm createCollaboratorProductForm = createCollaboratorProductListForm.getCollaboratorProducts().get(i);
-            if (productRepository.findById(createCollaboratorProductForm.getProductId()) == null)
+            if (productRepository.findById(createCollaboratorProductForm.getProductId()).orElse(null) == null)
             {
                 throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_NOT_FOUND_PRODUCT, "Not found product.");
             }
-
-//            if (collaboratorRepository.findById(createCollaboratorProductForm.getCollaboratorId()) == null)
-//            {
-//                throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_NOT_FOUND_COLLABORATOR, "Not found collaborator.");
-//            }
+            if (collaboratorRepository.findById(createCollaboratorProductForm.getCollaboratorId()).orElse(null) == null)
+            {
+                throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_NOT_FOUND_COLLABORATOR, "Not found collaborator.");
+            }
 
             if (createCollaboratorProductForm.getKind() == LandingISConstant.COLLABORATOR_PRODUCT_KIND_PERCENT_VALUE)
             {
@@ -114,7 +115,4 @@ public class CollaboratorProductController extends ABasicController {
         apiMessageDto.setMessage("Create product success");
         return apiMessageDto;
     }
-
-
-
 }

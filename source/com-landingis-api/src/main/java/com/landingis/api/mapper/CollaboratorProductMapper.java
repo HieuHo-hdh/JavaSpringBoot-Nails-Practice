@@ -4,6 +4,7 @@ package com.landingis.api.mapper;
 import com.landingis.api.dto.collaboratorProduct.CollaboratorProductDto;
 import com.landingis.api.form.collaboratorProduct.CreateCollaboratorProductForm;
 import com.landingis.api.form.collaboratorProduct.CreateCollaboratorProductListForm;
+import com.landingis.api.form.collaboratorProduct.UpdateCollaboratorProductForm;
 import com.landingis.api.storage.model.CollaboratorProduct;
 import org.mapstruct.*;
 
@@ -24,9 +25,17 @@ public interface CollaboratorProductMapper {
     @IterableMapping(elementTargetType = CollaboratorProduct.class, qualifiedByName = "adminCreateMapping")
     List<CollaboratorProduct> fromCreateCollaboratorProductFormToEntityList(List<CreateCollaboratorProductForm> content);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "kind", target = "kind")
+    @Mapping(source = "value", target = "value")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("adminUpdateMapping")
+    void fromUpdateCollaboratorProductFormToEntity(UpdateCollaboratorProductForm updateCollaboratorProductForm, @MappingTarget CollaboratorProduct collaboratorProduct);
+
+    @IterableMapping(elementTargetType = CollaboratorProduct.class, qualifiedByName = "adminUpdateMapping")
+    List<CollaboratorProduct> fromUpdateCollaboratorProductFormToEntityList(List<UpdateCollaboratorProductForm> content);
 
     @Mapping(source = "id", target = "id")
-
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "value", target = "value")
     @Mapping(source = "status", target = "status")
