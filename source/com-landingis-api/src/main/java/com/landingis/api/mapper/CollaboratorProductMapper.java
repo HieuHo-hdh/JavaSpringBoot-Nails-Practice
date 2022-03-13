@@ -32,13 +32,12 @@ public interface CollaboratorProductMapper {
     @Named("adminUpdateMapping")
     void fromUpdateCollaboratorProductFormToEntity(UpdateCollaboratorProductForm updateCollaboratorProductForm, @MappingTarget CollaboratorProduct collaboratorProduct);
 
-    @IterableMapping(elementTargetType = CollaboratorProduct.class, qualifiedByName = "adminUpdateMapping")
-    List<CollaboratorProduct> fromUpdateCollaboratorProductFormToEntityList(List<UpdateCollaboratorProductForm> content);
-
     @Mapping(source = "id", target = "id")
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "value", target = "value")
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "product", target = "productDto")
+    @Mapping(source = "collaborator", target = "collaboratorDto")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedBy", target = "modifiedBy")

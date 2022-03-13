@@ -1,6 +1,8 @@
 package com.landingis.api.mapper;
 
+import com.landingis.api.dto.collaborator.CollaboratorDto;
 import com.landingis.api.dto.collaboratorProduct.CollaboratorProductDto;
+import com.landingis.api.dto.product.ProductDto;
 import com.landingis.api.form.collaboratorProduct.CreateCollaboratorProductForm;
 import com.landingis.api.form.collaboratorProduct.UpdateCollaboratorProductForm;
 import com.landingis.api.storage.model.Collaborator;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-03-09T19:55:02+0700",
+    date = "2022-03-13T11:26:34+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -67,20 +69,6 @@ public class CollaboratorProductMapperImpl implements CollaboratorProductMapper 
     }
 
     @Override
-    public List<CollaboratorProduct> fromUpdateCollaboratorProductFormToEntityList(List<UpdateCollaboratorProductForm> content) {
-        if ( content == null ) {
-            return null;
-        }
-
-        List<CollaboratorProduct> list = new ArrayList<CollaboratorProduct>( content.size() );
-        for ( UpdateCollaboratorProductForm updateCollaboratorProductForm : content ) {
-            list.add( updateCollaboratorProductFormToCollaboratorProduct( updateCollaboratorProductForm ) );
-        }
-
-        return list;
-    }
-
-    @Override
     public CollaboratorProductDto fromEntityToCollaboratorProductDto(CollaboratorProduct collaboratorProduct) {
         if ( collaboratorProduct == null ) {
             return null;
@@ -92,8 +80,10 @@ public class CollaboratorProductMapperImpl implements CollaboratorProductMapper 
         collaboratorProductDto.setCreatedBy( collaboratorProduct.getCreatedBy() );
         collaboratorProductDto.setKind( collaboratorProduct.getKind() );
         collaboratorProductDto.setModifiedDate( collaboratorProduct.getModifiedDate() );
+        collaboratorProductDto.setCollaboratorDto( collaboratorToCollaboratorDto( collaboratorProduct.getCollaborator() ) );
         collaboratorProductDto.setModifiedBy( collaboratorProduct.getModifiedBy() );
         collaboratorProductDto.setId( collaboratorProduct.getId() );
+        collaboratorProductDto.setProductDto( productToProductDto( collaboratorProduct.getProduct() ) );
         collaboratorProductDto.setValue( collaboratorProduct.getValue() );
         collaboratorProductDto.setStatus( collaboratorProduct.getStatus() );
 
@@ -138,17 +128,54 @@ public class CollaboratorProductMapperImpl implements CollaboratorProductMapper 
         return product;
     }
 
-    protected CollaboratorProduct updateCollaboratorProductFormToCollaboratorProduct(UpdateCollaboratorProductForm updateCollaboratorProductForm) {
-        if ( updateCollaboratorProductForm == null ) {
+    protected CollaboratorDto collaboratorToCollaboratorDto(Collaborator collaborator) {
+        if ( collaborator == null ) {
             return null;
         }
 
-        CollaboratorProduct collaboratorProduct = new CollaboratorProduct();
+        CollaboratorDto collaboratorDto = new CollaboratorDto();
 
-        collaboratorProduct.setId( updateCollaboratorProductForm.getId() );
-        collaboratorProduct.setKind( updateCollaboratorProductForm.getKind() );
-        collaboratorProduct.setValue( updateCollaboratorProductForm.getValue() );
+        collaboratorDto.setId( collaborator.getId() );
+        collaboratorDto.setStatus( collaborator.getStatus() );
+        collaboratorDto.setModifiedDate( collaborator.getModifiedDate() );
+        collaboratorDto.setCreatedDate( collaborator.getCreatedDate() );
+        collaboratorDto.setModifiedBy( collaborator.getModifiedBy() );
+        collaboratorDto.setCreatedBy( collaborator.getCreatedBy() );
+        collaboratorDto.setBirthday( collaborator.getBirthday() );
+        collaboratorDto.setSex( collaborator.getSex() );
+        collaboratorDto.setNote( collaborator.getNote() );
+        collaboratorDto.setIdentityNumber( collaborator.getIdentityNumber() );
+        collaboratorDto.setDateOfIssue( collaborator.getDateOfIssue() );
+        collaboratorDto.setPlaceOfIssue( collaborator.getPlaceOfIssue() );
+        collaboratorDto.setBankNo( collaborator.getBankNo() );
+        collaboratorDto.setBankName( collaborator.getBankName() );
+        collaboratorDto.setBranchName( collaborator.getBranchName() );
 
-        return collaboratorProduct;
+        return collaboratorDto;
+    }
+
+    protected ProductDto productToProductDto(Product product) {
+        if ( product == null ) {
+            return null;
+        }
+
+        ProductDto productDto = new ProductDto();
+
+        productDto.setId( product.getId() );
+        productDto.setStatus( product.getStatus() );
+        productDto.setModifiedDate( product.getModifiedDate() );
+        productDto.setCreatedDate( product.getCreatedDate() );
+        productDto.setModifiedBy( product.getModifiedBy() );
+        productDto.setCreatedBy( product.getCreatedBy() );
+        productDto.setName( product.getName() );
+        productDto.setPrice( product.getPrice() );
+        productDto.setImage( product.getImage() );
+        productDto.setDescription( product.getDescription() );
+        productDto.setShortDescription( product.getShortDescription() );
+        productDto.setHasChild( product.getHasChild() );
+        productDto.setLabelColor( product.getLabelColor() );
+        productDto.setSaleOff( product.getSaleOff() );
+
+        return productDto;
     }
 }

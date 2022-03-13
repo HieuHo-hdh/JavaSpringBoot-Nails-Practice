@@ -65,13 +65,13 @@ public class CollaboratorProductController extends ABasicController {
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<CollaboratorProductDto> get(@PathVariable("id") Long id) {
-        if(!isAdmin()){
+        if (!isAdmin()) {
             throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_UNAUTHORIZED, "Not allowed get.");
         }
         ApiMessageDto<CollaboratorProductDto> result = new ApiMessageDto<>();
 
         CollaboratorProduct collaboratorProduct = collaboratorProductRepository.findById(id).orElse(null);
-        if(collaboratorProduct == null) {
+        if (collaboratorProduct == null) {
             throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_NOT_FOUND, "Not found collaborator product.");
         }
         result.setData(collaboratorProductMapper.fromEntityToCollaboratorProductDto(collaboratorProduct));
@@ -81,38 +81,74 @@ public class CollaboratorProductController extends ABasicController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<String> create(@Valid @RequestBody CreateCollaboratorProductListForm createCollaboratorProductListForm, BindingResult bindingResult) {
-        if(!isAdmin()){
+        if (!isAdmin()) {
             throw new RequestException(ErrorCode.PRODUCT_ERROR_UNAUTHORIZED, "Not allowed to create.");
         }
 
-        for (Integer i = 0 ; i < createCollaboratorProductListForm.getCollaboratorProducts().size(); i++)
-        {
+        for (Integer i = 0; i < createCollaboratorProductListForm.getCollaboratorProducts().size(); i++) {
             CreateCollaboratorProductForm createCollaboratorProductForm = createCollaboratorProductListForm.getCollaboratorProducts().get(i);
-            if (productRepository.findById(createCollaboratorProductForm.getProductId()).orElse(null) == null)
-            {
+            if (productRepository.findById(createCollaboratorProductForm.getProductId()).orElse(null) == null) {
                 throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_NOT_FOUND_PRODUCT, "Not found product.");
             }
-            if (collaboratorRepository.findById(createCollaboratorProductForm.getCollaboratorId()).orElse(null) == null)
-            {
+            if (collaboratorRepository.findById(createCollaboratorProductForm.getCollaboratorId()).orElse(null) == null) {
                 throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_NOT_FOUND_COLLABORATOR, "Not found collaborator.");
             }
 
-            if (createCollaboratorProductForm.getKind() == LandingISConstant.COLLABORATOR_PRODUCT_KIND_PERCENT_VALUE)
-            {
+            if (createCollaboratorProductForm.getKind() == LandingISConstant.COLLABORATOR_PRODUCT_KIND_PERCENT_VALUE) {
                 if (createCollaboratorProductForm.getValue() < 0 || createCollaboratorProductForm.getValue() > 100)
                     throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_INVALID_VALUE, "Invalid value");
-            }
-            else if (createCollaboratorProductForm.getKind() == LandingISConstant.COLLABORATOR_PRODUCT_KIND_MONEY_VALUE)
-            {
+            } else if (createCollaboratorProductForm.getKind() == LandingISConstant.COLLABORATOR_PRODUCT_KIND_MONEY_VALUE) {
                 if (createCollaboratorProductForm.getValue() < 0)
                     throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_INVALID_VALUE, "Invalid value");
-            }
-            else throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_INVALID_KIND, "Invalid kind");
+            } else throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_INVALID_KIND, "Invalid kind");
         }
         List<CollaboratorProduct> collaboratorProducts = collaboratorProductMapper.fromCreateCollaboratorProductFormToEntityList(createCollaboratorProductListForm.getCollaboratorProducts());
         collaboratorProductRepository.saveAll(collaboratorProducts);
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
         apiMessageDto.setMessage("Create product success");
         return apiMessageDto;
+    }
+
+    @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<String> update(@Valid @RequestBody UpdateCollaboratorProductListForm updateCollaboratorProductListForm, BindingResult bindingResult) {
+        if (!isAdmin()) {
+            throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_UNAUTHORIZED);
+        }
+        ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
+        for (Integer i = 0; i < updateCollaboratorProductListForm.getCollaboratorProducts().size(); i++) {
+            UpdateCollaboratorProductForm updateCollaboratorProductForm = updateCollaboratorProductListForm.getCollaboratorProducts().get(i);
+            CollaboratorProduct collaboratorProduct = collaboratorProductRepository.findById(updateCollaboratorProductForm.getId()).orElse(null);
+            if (collaboratorProduct == null) {
+                throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_NOT_FOUND, "Not found collaborator product.");
+            }
+            if (updateCollaboratorProductForm.getKind() == LandingISConstant.COLLABORATOR_PRODUCT_KIND_PERCENT_VALUE) {
+                if (updateCollaboratorProductForm.getValue() < 0 || updateCollaboratorProductForm.getValue() > 100)
+                    throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_INVALID_VALUE, "Invalid value");
+            } else if (updateCollaboratorProductForm.getKind() == LandingISConstant.COLLABORATOR_PRODUCT_KIND_MONEY_VALUE) {
+                if (updateCollaboratorProductForm.getValue() < 0)
+                    throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_INVALID_VALUE, "Invalid value");
+            } else throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_INVALID_KIND, "Invalid kind");
+            collaboratorProductMapper.fromUpdateCollaboratorProductFormToEntity(updateCollaboratorProductForm, collaboratorProduct);
+            collaboratorProductRepository.save(collaboratorProduct);
+        }
+        apiMessageDto.setMessage("Update collaborator product success");
+        return apiMessageDto;
+    }
+
+    @DeleteMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<String> delete(@Valid @RequestBody List<Long> ids) {
+        if (!isAdmin()) {
+            throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_UNAUTHORIZED);
+        }
+        ids.forEach(id -> {
+            CollaboratorProduct collaboratorProduct = collaboratorProductRepository.findById(id).orElse(null);
+            if(collaboratorProduct == null){
+                throw new RequestException(ErrorCode.COLLABORATOR_PRODUCT_ERROR_NOT_FOUND);
+            }
+            collaboratorProductRepository.delete(collaboratorProduct);
+        });
+        ApiMessageDto<String> result = new ApiMessageDto<>();
+        result.setMessage("Delete success");
+        return result;
     }
 }
