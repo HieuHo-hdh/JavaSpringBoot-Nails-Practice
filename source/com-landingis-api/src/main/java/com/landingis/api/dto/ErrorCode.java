@@ -129,6 +129,8 @@ public class ErrorCode {
     public static final String ORDERS_ERROR_NOT_FOUND_ORDERS_DETAIL = "ERROR-ORDERS-004";
     public static final String ORDERS_ERROR_UNEQUAL_NUMBER = "ERROR-ORDERS-005";
     public static final String ORDERS_ERROR_INVALID_STATE = "ERROR-ORDERS-006";
+    public static final String ORDERS_ERROR_NOT_FOUND_COLLABORATOR = "ERROR-ORDERS-007";
+
 
     /**
      * Collaborator product error code

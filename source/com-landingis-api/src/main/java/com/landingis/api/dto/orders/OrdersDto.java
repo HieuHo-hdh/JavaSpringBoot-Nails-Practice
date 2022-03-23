@@ -4,13 +4,8 @@ import com.landingis.api.dto.ABasicAdminDto;
 import com.landingis.api.dto.collaborator.CollaboratorDto;
 import com.landingis.api.dto.customer.CustomerDto;
 import com.landingis.api.dto.employee.EmployeeDto;
-import com.landingis.api.form.orders.CreateOrdersDetailForm;
-import com.landingis.api.storage.model.OrdersDetail;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Data

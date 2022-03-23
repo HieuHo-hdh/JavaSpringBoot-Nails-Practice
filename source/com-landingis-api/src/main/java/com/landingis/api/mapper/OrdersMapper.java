@@ -1,6 +1,7 @@
 package com.landingis.api.mapper;
 
 import com.landingis.api.dto.orders.OrdersDto;
+import com.landingis.api.dto.orders.OrdersTotalMoneyReportDto;
 import com.landingis.api.form.orders.CreateOrdersForm;
 import com.landingis.api.form.orders.UpdateOrdersForm;
 import com.landingis.api.form.orders.UpdateOrdersStateForm;
@@ -18,6 +19,7 @@ public interface OrdersMapper {
 //    @Mapping(source = "customerEmail", target = "customer.email")
 //    @Mapping(source = "customerFullName", target = "customer.fullName")
 //    @Mapping(source = "customerPhone", target = "customer.phone")
+    @Mapping(source = "collaboratorId", target = "collaborator.id")
     @Mapping(source = "ordersAddress", target = "address")
     @Mapping(source = "ordersDocument", target = "document")
     @Mapping(source = "ordersSaleOff", target = "saleOff")
@@ -53,10 +55,23 @@ public interface OrdersMapper {
     @Mapping(source = "modifiedBy", target = "modifiedBy")
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "collaborator", target = "collaboratorDto")
+
     @BeanMapping(ignoreByDefault = true)
     @Named("ordersMapping")
     OrdersDto fromEntityToOrdersDto(Orders address);
 
     @IterableMapping(elementTargetType = OrdersDto.class, qualifiedByName = "ordersMapping")
     List<OrdersDto> fromEntityListToOrdersDtoList(List<Orders> content);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "orders.id", target = "ordersId")
+    @Mapping(source = "collaborator.account.fullName", target = "collaboratorFullName")
+    @Mapping(source = "totalMoney", target = "totalMoney")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("ordersTotalMoneyReportMapping")
+    OrdersTotalMoneyReportDto fromEntityToOrdersTotalMoneyReportDto(Orders orders);
+
+    @IterableMapping(elementTargetType = OrdersTotalMoneyReportDto.class, qualifiedByName = "ordersTotalMoneyReportMapping")
+    List<OrdersTotalMoneyReportDto> fromEntityListToOrdersTotalMoneyReportDtoList(List<Orders> content);
 }

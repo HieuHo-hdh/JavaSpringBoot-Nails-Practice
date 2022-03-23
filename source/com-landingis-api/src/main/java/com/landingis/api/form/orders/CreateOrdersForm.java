@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -28,6 +29,10 @@ public class CreateOrdersForm {
 
     @ApiModelProperty(name = "ordersSaleOff")
     private Integer ordersSaleOff;
+
+    @NotNull(message="collaboratorId cannot be null")
+    @ApiModelProperty(name = "collaborator_Id", required = true)
+    private Long collaboratorId;
 
     @NotEmpty(message = "ordersDetailDtoList cannot be null")
     @ApiModelProperty(required = true)

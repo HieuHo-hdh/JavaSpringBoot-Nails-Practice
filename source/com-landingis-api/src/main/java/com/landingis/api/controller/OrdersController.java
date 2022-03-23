@@ -6,6 +6,8 @@ import com.landingis.api.dto.ErrorCode;
 import com.landingis.api.dto.ResponseListObj;
 import com.landingis.api.dto.orders.OrdersDetailDto;
 import com.landingis.api.dto.orders.OrdersDto;
+import com.landingis.api.dto.orders.OrdersResponseListObj;
+import com.landingis.api.dto.orders.OrdersTotalMoneyReportDto;
 import com.landingis.api.exception.RequestException;
 import com.landingis.api.form.orders.*;
 import com.landingis.api.mapper.AccountMapper;
@@ -13,12 +15,14 @@ import com.landingis.api.mapper.OrdersDetailMapper;
 import com.landingis.api.mapper.OrdersMapper;
 import com.landingis.api.service.LandingIsApiService;
 import com.landingis.api.storage.criteria.OrdersCriteria;
+import com.landingis.api.storage.criteria.OrdersTotalMoneyReportCriteria;
 import com.landingis.api.storage.model.*;
 import com.landingis.api.storage.repository.*;
 import com.landingis.api.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -27,6 +31,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -53,6 +58,12 @@ public class OrdersController extends ABasicController{
     OrdersDetailRepository ordersDetailRepository;
 
     @Autowired
+    OrdersTotalMoneyReportRepository ordersTotalMoneyReportRepository;
+
+    @Autowired
+    CollaboratorRepository collaboratorRepository;
+
+    @Autowired
     OrdersMapper ordersMapper;
 
     @Autowired
@@ -72,7 +83,7 @@ public class OrdersController extends ABasicController{
         ApiMessageDto<ResponseListObj<OrdersDto>> responseListObjApiMessageDto = new ApiMessageDto<>();
 
         Page<Orders> listOrders = ordersRepository.findAll(ordersCriteria.getSpecification(), pageable);
-
+        
         ResponseListObj<OrdersDto> responseListObj = new ResponseListObj<>();
         responseListObj.setData(ordersMapper.fromEntityListToOrdersDtoList(listOrders.getContent()));
         responseListObj.setPage(pageable.getPageNumber());
@@ -81,6 +92,46 @@ public class OrdersController extends ABasicController{
 
         responseListObjApiMessageDto.setData(responseListObj);
         responseListObjApiMessageDto.setMessage("List orders success");
+        return responseListObjApiMessageDto;
+    }
+
+//    Get Orders Total Money Report List
+    @GetMapping(value = "/orders-total-money-report", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<ResponseListObj<OrdersTotalMoneyReportDto>> getOrdersTotalMoneyReportList(OrdersTotalMoneyReportCriteria ordersTotalMoneyReportCriteria, Pageable pageable) {
+        if (!isAdmin()) {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_UNAUTHORIZED, "Not allow get list");
+        }
+        ApiMessageDto<ResponseListObj<OrdersTotalMoneyReportDto>> responseListObjApiMessageDto = new ApiMessageDto<>();
+        Date fromDate = ordersTotalMoneyReportCriteria.getFrom();
+        Date toDate = ordersTotalMoneyReportCriteria.getTo();
+        Integer state = LandingISConstant.ORDERS_STATE_DONE;
+        Page<Orders> listOrders;
+        if (fromDate != null && toDate!= null)
+        {
+//            listOrders = ordersTotalMoneyReportRepository.findAll(ordersTotalMoneyReportCriteria.getSpecification(), pageable);
+            listOrders = new PageImpl<>(ordersTotalMoneyReportRepository.getOrdersTotalMoneyFromDateToDate(fromDate, toDate, state));
+        }
+        else if (fromDate != null)
+        {
+            listOrders = new PageImpl<>(ordersTotalMoneyReportRepository.getOrdersTotalMoneyFromDate(fromDate, state));
+        }
+        else if (toDate!= null)
+        {
+            listOrders = new PageImpl<>(ordersTotalMoneyReportRepository.getOrdersTotalMoneyToDate(toDate, state));
+        }
+        else
+        {
+            listOrders = new PageImpl<>(ordersTotalMoneyReportRepository.getOrdersTotalMoney(state));
+        }
+
+        ResponseListObj<OrdersTotalMoneyReportDto> responseListObj = new ResponseListObj<>();
+        responseListObj.setData(ordersMapper.fromEntityListToOrdersTotalMoneyReportDtoList(listOrders.getContent()));
+        responseListObj.setPage(pageable.getPageNumber());
+        responseListObj.setTotalPage(listOrders.getTotalPages());
+        responseListObj.setTotalElements(listOrders.getTotalElements());
+
+        responseListObjApiMessageDto.setData(responseListObj);
+        responseListObjApiMessageDto.setMessage("List orders total money report success");
         return responseListObjApiMessageDto;
     }
 
@@ -178,6 +229,11 @@ public class OrdersController extends ABasicController{
     public ApiMessageDto<String> create(@Valid @RequestBody CreateOrdersForm createOrdersForm, BindingResult bindingResult) {
         if (!isAdmin()) {
             throw new RequestException(ErrorCode.ORDERS_ERROR_UNAUTHORIZED, "Not allow to create");
+        }
+
+        Collaborator collaborator = collaboratorRepository.findById(createOrdersForm.getCollaboratorId()).orElse(null);
+        if(collaborator == null) {
+            throw new RequestException(ErrorCode.ORDERS_ERROR_NOT_FOUND_COLLABORATOR, "Not found collaborator.");
         }
 
         List<CreateOrdersDetailForm> createOrdersDetailFormList = createOrdersForm.getOrdersDetailDtos();

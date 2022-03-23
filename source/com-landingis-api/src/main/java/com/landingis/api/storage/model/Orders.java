@@ -1,6 +1,8 @@
 package com.landingis.api.storage.model;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -31,7 +33,8 @@ public class Orders extends  Auditable<String> {
     private String receiverPhone;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "collaborator_id")
+//    @JoinColumn(name = "collaborator_id")
+    @JoinColumn(name = "orders_collaborator_id")
     private Collaborator collaborator;
 
     @ManyToOne(fetch = FetchType.LAZY)
