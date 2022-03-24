@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Data
 public class OrdersTotalMoneyReportDto extends ABasicAdminDto {
-    @ApiModelProperty(name = "id")
-    private Long id;
+//    @ApiModelProperty(name = "id")
+//    private Long id;
 
     @ApiModelProperty(name = "orders_id")
     private Long ordersId;

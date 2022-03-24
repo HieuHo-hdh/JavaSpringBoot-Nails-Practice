@@ -75,6 +75,7 @@ public class ErrorCode {
     public static final String COLLABORATOR_ERROR_EMAIL_EXIST = "ERROR-COLLABORATOR-006";
     public static final String COLLABORATOR_ERROR_OLD_PWD_NOT_MATCH = "ERROR-COLLABORATOR-007";
     public static final String COLLABORATOR_ERROR_NOT_FOUND_EMPLOYEE = "ERROR-COLLABORATOR-008";
+    public static final String COLLABORATOR_TOTAL_MONEY_REPORT_ERROR_UNAUTHORIZED = "ERROR-COLLABORATOR-009";
 
     /**
      * Province error code

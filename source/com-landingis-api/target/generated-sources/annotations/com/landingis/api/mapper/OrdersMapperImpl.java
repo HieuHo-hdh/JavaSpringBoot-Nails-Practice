@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-03-23T17:40:16+0700",
+    date = "2022-03-24T12:22:33+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -124,7 +124,6 @@ public class OrdersMapperImpl implements OrdersMapper {
         ordersTotalMoneyReportDto.setOrdersId( orders.getId() );
         ordersTotalMoneyReportDto.setCollaboratorFullName( ordersCollaboratorAccountFullName( orders ) );
         ordersTotalMoneyReportDto.setTotalMoney( orders.getTotalMoney() );
-        ordersTotalMoneyReportDto.setId( orders.getId() );
 
         return ordersTotalMoneyReportDto;
     }

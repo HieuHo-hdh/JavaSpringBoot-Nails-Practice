@@ -64,7 +64,7 @@ public interface OrdersMapper {
     @IterableMapping(elementTargetType = OrdersDto.class, qualifiedByName = "ordersMapping")
     List<OrdersDto> fromEntityListToOrdersDtoList(List<Orders> content);
 
-    @Mapping(source = "id", target = "id")
+//    @Mapping(source = "id", target = "id")
     @Mapping(source = "orders.id", target = "ordersId")
     @Mapping(source = "collaborator.account.fullName", target = "collaboratorFullName")
     @Mapping(source = "totalMoney", target = "totalMoney")

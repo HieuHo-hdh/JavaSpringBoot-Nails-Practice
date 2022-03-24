@@ -5,23 +5,24 @@ import com.landingis.api.dto.ApiMessageDto;
 import com.landingis.api.dto.ErrorCode;
 import com.landingis.api.dto.ResponseListObj;
 import com.landingis.api.dto.collaborator.CollaboratorDto;
+import com.landingis.api.dto.collaboratorTotalMoneyReport.CollaboratorTotalMoneyReportDto;
 import com.landingis.api.exception.RequestException;
 import com.landingis.api.form.collaborator.CreateCollaboratorForm;
 import com.landingis.api.form.collaborator.UpdateCollaboratorAdminForm;
 import com.landingis.api.mapper.CollaboratorMapper;
+import com.landingis.api.mapper.CollaboratorTotalMoneyReportMapper;
 import com.landingis.api.service.LandingIsApiService;
 import com.landingis.api.storage.criteria.CollaboratorCriteria;
+import com.landingis.api.storage.criteria.CollaboratorTotalMoneyReportCriteria;
 import com.landingis.api.storage.model.Collaborator;
 import com.landingis.api.storage.model.Employee;
 import com.landingis.api.storage.model.Group;
-import com.landingis.api.storage.repository.AccountRepository;
-import com.landingis.api.storage.repository.CollaboratorRepository;
-import com.landingis.api.storage.repository.EmployeeRepository;
-import com.landingis.api.storage.repository.GroupRepository;
+import com.landingis.api.storage.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -30,6 +31,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/collaborator")
@@ -48,10 +51,16 @@ public class CollaboratorController extends ABasicController {
     EmployeeRepository employeeRepository;
 
     @Autowired
+    CollaboratorTotalMoneyReportRepository collaboratorTotalMoneyReportRepository;
+
+    @Autowired
     GroupRepository groupRepository;
 
     @Autowired
     CollaboratorMapper collaboratorMapper;
+
+    @Autowired
+    CollaboratorTotalMoneyReportMapper collaboratorTotalMoneyReportMapper;
 
     @Autowired
     LandingIsApiService landingIsApiService;
@@ -73,6 +82,60 @@ public class CollaboratorController extends ABasicController {
 
         responseListObjApiMessageDto.setData(responseListObj);
         responseListObjApiMessageDto.setMessage("List collaborator success");
+        return responseListObjApiMessageDto;
+    }
+
+    @GetMapping(value = "/collaborators-total-money-report", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<ResponseListObj<CollaboratorTotalMoneyReportDto>> getOrdersTotalMoneyReportList(CollaboratorTotalMoneyReportCriteria collaboratorTotalMoneyReportCriteria, Pageable pageable) {
+        if (!isAdmin()) {
+            throw new RequestException(ErrorCode.COLLABORATOR_ERROR_UNAUTHORIZED, "Not allow get list");
+        }
+        ApiMessageDto<ResponseListObj<CollaboratorTotalMoneyReportDto>> responseListObjApiMessageDto = new ApiMessageDto<>();
+        Date fromDate = collaboratorTotalMoneyReportCriteria.getFrom();
+        Date toDate = collaboratorTotalMoneyReportCriteria.getTo();
+        if (fromDate != null && toDate != null)
+        {
+            if (fromDate.after(toDate))
+            {
+                throw new RequestException(ErrorCode.COLLABORATOR_TOTAL_MONEY_REPORT_ERROR_UNAUTHORIZED, "Invalid time duration");
+            }
+        }
+        Integer state = LandingISConstant.ORDERS_STATE_DONE;
+
+        Page<Collaborator> listCollaborators = collaboratorTotalMoneyReportRepository.findAll(collaboratorTotalMoneyReportCriteria.getSpecification(), pageable);
+        List<CollaboratorTotalMoneyReportDto> collaboratorTotalMoneyReportList = collaboratorTotalMoneyReportMapper.fromEntityListToCollaboratorTotalMoneyReportDtoList(listCollaborators.getContent());
+
+        collaboratorTotalMoneyReportList.forEach(collaborator -> {
+            Double sum = 0d;
+            if (fromDate != null && toDate!= null)
+            {
+                sum = collaboratorTotalMoneyReportRepository.getOrdersTotalMoneyFromDateToDate(fromDate, toDate, state, collaborator.getCollaboratorId());
+            }
+            else if (fromDate != null)
+            {
+                sum = collaboratorTotalMoneyReportRepository.getOrdersTotalMoneyFromDate(fromDate, state, collaborator.getCollaboratorId());
+            }
+            else if (toDate!= null)
+            {
+                sum = collaboratorTotalMoneyReportRepository.getOrdersTotalMoneyToDate(toDate, state, collaborator.getCollaboratorId());
+            }
+            else
+            {
+                sum = collaboratorTotalMoneyReportRepository.getOrdersTotalMoney(state, collaborator.getCollaboratorId());
+            }
+            if (sum == null) sum = 0d;
+            collaborator.setTotalMoney(sum);
+        });
+
+        ResponseListObj<CollaboratorTotalMoneyReportDto> responseListObj = new ResponseListObj<>();
+        responseListObj.setData(collaboratorTotalMoneyReportList);
+//        responseListObj.setData(collaboratorTotalMoneyReportMapper.fromEntityListToCollaboratorTotalMoneyReportDtoList(listCollaborators.getContent()));
+        responseListObj.setPage(pageable.getPageNumber());
+        responseListObj.setTotalPage(listCollaborators.getTotalPages());
+        responseListObj.setTotalElements(listCollaborators.getTotalElements());
+
+        responseListObjApiMessageDto.setData(responseListObj);
+        responseListObjApiMessageDto.setMessage("List collaborator total money report success");
         return responseListObjApiMessageDto;
     }
 
