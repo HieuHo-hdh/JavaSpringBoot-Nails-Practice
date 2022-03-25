@@ -64,6 +64,10 @@ public class LandingISConstant {
     public static final Integer COLLABORATOR_PRODUCT_KIND_MONEY_VALUE = 1;
     public static final Integer COLLABORATOR_PRODUCT_KIND_PERCENT_VALUE = 2;
 
+    public static final Integer SALARY_PERIOD_STATE_PENDING = 1;
+    public static final Integer SALARY_PERIOD_STATE_CALCULATED = 2;
+    public static final Integer SALARY_PERIOD_STATE_DONE = 3;
+
     private LandingISConstant(){
         throw new IllegalStateException("Utility class");
     }

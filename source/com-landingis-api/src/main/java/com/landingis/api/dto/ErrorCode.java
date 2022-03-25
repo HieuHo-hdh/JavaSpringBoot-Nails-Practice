@@ -143,6 +143,16 @@ public class ErrorCode {
     public static final String COLLABORATOR_PRODUCT_ERROR_INVALID_VALUE = "ERROR-COLLABORATOR-PRODUCT-005";
     public static final String COLLABORATOR_PRODUCT_ERROR_INVALID_KIND = "ERROR-COLLABORATOR-PRODUCT-006";
 
+    /**
+     * Collaborator product error code
+     */
+    public static final String SALARY_PERIOD_ERROR_UNAUTHORIZED = "ERROR-SALARY-PERIOD-001";
+    public static final String SALARY_PERIOD_ERROR_NOT_FOUND = "ERROR-SALARY-PERIOD-002";
+    public static final String SALARY_PERIOD_ERROR_INVALID_TIME = "ERROR-SALARY-PERIOD-003";
+    public static final String SALARY_PERIOD_ERROR_NOT_FOUND_COLLABORATOR = "ERROR-SALARY-PERIOD-004";
+    public static final String SALARY_PERIOD_ERROR_INVALID_VALUE = "ERROR-SALARY-PERIOD-005";
+    public static final String SALARY_PERIOD_ERROR_INVALID_KIND = "ERROR-SALARY-PERIOD-006";
+
 
     private ErrorCode() { throw new IllegalStateException("Utility class"); }
 }
